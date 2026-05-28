@@ -1,0 +1,352 @@
+[
+  {
+    "no": 1,
+    "category": "Home",
+    "question": "What do I see on the Home page when I first log in?",
+    "answer": "You'll see two main panels: My Tasks (sidebar on the left) and Today's Classes (main panel). It gives you a quick overview of your tasks and upcoming classes for the day.",
+    "sectionId": "1.1"
+  },
+  {
+    "no": 2,
+    "category": "Home",
+    "question": "What is the 'Enter Class Toast' notification?",
+    "answer": "It's a pop-up alert that appears 10 minutes before your class starts, saying 'Class will begin shortly…'. Once the class time arrives, the message changes to 'Class is live! Join now.'",
+    "sectionId": "1.1"
+  },
+  {
+    "no": 3,
+    "category": "Home",
+    "question": "What does the Pre-Class Completion Bar show?",
+    "answer": "It shows the percentage of students who have completed the Pre-Class activities for that specific class. This helps you gauge student readiness before the session.",
+    "sectionId": "1.1"
+  },
+  {
+    "no": 4,
+    "category": "Home",
+    "question": "What happens when I click the 'Enter Class' button?",
+    "answer": "A countdown modal appears for 5 seconds. Once it reaches zero, the system automatically starts broadcasting your live class session.",
+    "sectionId": "1.1"
+  },
+  {
+    "no": 5,
+    "category": "Home",
+    "question": "Can I cancel entering a class after clicking 'Enter Class'?",
+    "answer": "Yes. A 'Cancel' button appears in the countdown modal. You can click it to stop the process before the 5-second countdown ends.",
+    "sectionId": "1.1"
+  },
+  {
+    "no": 6,
+    "category": "Home",
+    "question": "What is the 'Unanswered Questions' section in the sidebar?",
+    "answer": "It shows questions that students asked during class that you haven't responded to yet. These remain visible until you answer them.",
+    "sectionId": "1.1"
+  },
+  {
+    "no": 7,
+    "category": "Home",
+    "question": "What is the 'Content Readiness Check' in the sidebar?",
+    "answer": "It notifies you about units that haven't been assigned yet. The notification disappears automatically once all unassigned units are filled.",
+    "sectionId": "1.1"
+  },
+  {
+    "no": 8,
+    "category": "Home",
+    "question": "What is 'Assignment Review' in the sidebar?",
+    "answer": "It shows the number of student assignment submissions that are waiting for your review, so you can track pending grading tasks.",
+    "sectionId": "1.1"
+  },
+  {
+    "no": 9,
+    "category": "Home",
+    "question": "Where can I see upcoming classes beyond today?",
+    "answer": "The 'Upcoming Classes This Week' section on the Home page shows your classes for the rest of the current week (Monday to Saturday).",
+    "sectionId": "1.1"
+  },
+  {
+    "no": 10,
+    "category": "Courses",
+    "question": "How do I find my courses from a previous semester?",
+    "answer": "Go to the Courses page and click the Semester tabs (Semester 1, 2, 3, 4) to switch between semesters and view the courses for each one.",
+    "sectionId": "1.2"
+  },
+  {
+    "no": 11,
+    "category": "Courses",
+    "question": "What does the Course Completion bar mean on the course card?",
+    "answer": "It shows how many classes have been completed out of the total, for example '3/1' means 1 out of 3 classes is done. Completed classes are shown in orange.",
+    "sectionId": "1.2"
+  },
+  {
+    "no": 12,
+    "category": "Courses",
+    "question": "How do I open a course's detail page?",
+    "answer": "Click on the course card directly. Each card is clickable and will navigate you to the course's detailed information.",
+    "sectionId": "1.2"
+  },
+  {
+    "no": 13,
+    "category": "Course Plan",
+    "question": "What is the Course Plan view?",
+    "answer": "The Course Plan shows all classes and units in a course. You can see class dates, unit names, and preview content before teaching.",
+    "sectionId": "1.2.1"
+  },
+  {
+    "no": 14,
+    "category": "Course Plan",
+    "question": "How do I preview class content before teaching?",
+    "answer": "Click on the unit name in the Course Plan sidebar. It will show the content in the preview area on the right side.",
+    "sectionId": "1.2.1"
+  },
+  {
+    "no": 15,
+    "category": "Course Plan",
+    "question": "What are 'Unassigned Units' in the Course Plan?",
+    "answer": "These are units that have been created but not yet assigned to any class. The system will alert you via the Content Readiness Check task.",
+    "sectionId": "1.2.1"
+  },
+  {
+    "no": 16,
+    "category": "Class Management",
+    "question": "How do I add content to a class?",
+    "answer": "Open Class Management, then click the '+ Add Content' button. You can either create new content or select from Master Content or My Content.",
+    "sectionId": "1.2.2"
+  },
+  {
+    "no": 17,
+    "category": "Class Management",
+    "question": "What is the difference between Pre-Class, In-Class, and Post-Class panels?",
+    "answer": "Pre-Class = activities before the session (e.g. readings). In-Class = content delivered live during the session. Post-Class = follow-up work like assignments. All three panels support drag-and-drop to reorder content.",
+    "sectionId": "1.2.2"
+  },
+  {
+    "no": 18,
+    "category": "Class Management",
+    "question": "How does the 'Add Content' button decide where to insert new content?",
+    "answer": "If you have content selected, new content is added right after it. If nothing is selected, it's added after the last item in the currently active panel. By default, it goes to the Pre-Class panel.",
+    "sectionId": "1.2.2"
+  },
+  {
+    "no": 19,
+    "category": "Class Management",
+    "question": "What does 'Reset to Master' do?",
+    "answer": "It reverts all content and settings back to the original master version. However, any classes or sub-units that have already been completed will NOT be reset.",
+    "sectionId": "1.2.2"
+  },
+  {
+    "no": 20,
+    "category": "Class Management",
+    "question": "Why do I need to click 'Update' after editing content?",
+    "answer": "The Update button saves and confirms all your changes. Without clicking it, your adjustments won't be stored in the system.",
+    "sectionId": "1.2.2"
+  },
+  {
+    "no": 21,
+    "category": "Add Content",
+    "question": "What content types can I create and upload?",
+    "answer": "There are 6 types: Presentation, Video, Text, Poll, Form, and via Linkage Tools for external resources.",
+    "sectionId": "1.2.3"
+  },
+  {
+    "no": 22,
+    "category": "Add Content",
+    "question": "What is 'Master Content'?",
+    "answer": "Master Content is the default content provided by the system. When a course is cloned, all versions share the same Master Content as a starting template.",
+    "sectionId": "1.2.3"
+  },
+  {
+    "no": 23,
+    "category": "Add Content",
+    "question": "What is 'My Content'?",
+    "answer": "Content you created under your own account. It is private — only you can view, edit, and use it. Other instructors cannot access it.",
+    "sectionId": "1.2.3"
+  },
+  {
+    "no": 24,
+    "category": "Add Content",
+    "question": "What do the icons next to each content item mean?",
+    "answer": "The first icon = content type. The second icon = indicates linkage tools are attached. 'Completed' status = creation is done. 'Published' status = it's visible to students (you can also set a publish date).",
+    "sectionId": "1.2.3"
+  },
+  {
+    "no": 25,
+    "category": "Add Content",
+    "question": "How do I edit content after saving it?",
+    "answer": "Click the Edit (pencil) icon next to the content in the Add Content modal. You can update or modify it at any time.",
+    "sectionId": "1.2.3"
+  },
+  {
+    "no": 26,
+    "category": "Assignments",
+    "question": "How do I add an assignment to a class unit?",
+    "answer": "In the content edit page (e.g. Presentation), scroll down to the 'Assignment' section and click '+ Add'. This links an assignment directly to that content.",
+    "sectionId": "1.2.4"
+  },
+  {
+    "no": 27,
+    "category": "Assignments",
+    "question": "What is the difference between Individual and Group assignments?",
+    "answer": "Individual = each student submits on their own. Group = students are divided into groups and submit as a team.",
+    "sectionId": "1.2.4"
+  },
+  {
+    "no": 28,
+    "category": "Assignments",
+    "question": "What is 'Published Date' in assignment settings?",
+    "answer": "The date when the assignment becomes visible to students. Before this date, students cannot see the assignment.",
+    "sectionId": "1.2.4"
+  },
+  {
+    "no": 29,
+    "category": "Assignments",
+    "question": "What is the difference between 'Due Date' and 'Cut Off Date'?",
+    "answer": "Due Date = the expected deadline for submission. Cut Off Date = the final absolute deadline. After Cut Off, submissions are still accepted but marked as 'Late'.",
+    "sectionId": "1.2.4"
+  },
+  {
+    "no": 30,
+    "category": "Assignments",
+    "question": "What is 'Shuffle Questions and Answer Choices'?",
+    "answer": "When enabled, each student sees questions and answer options in a randomized order, reducing cheating risk.",
+    "sectionId": "1.2.4"
+  },
+  {
+    "no": 31,
+    "category": "Assignments",
+    "question": "What does 'One Question at a Time' setting do?",
+    "answer": "Students see only one question at a time instead of the full list. This helps maintain focus during the assignment.",
+    "sectionId": "1.2.4"
+  },
+  {
+    "no": 32,
+    "category": "Assignments",
+    "question": "How do I set up a Group Assignment grouping?",
+    "answer": "When adding a Group Assignment, click 'Setup Group Assignment'. You can choose: Assign Automatically (random), Assign Manually, or Let Students Choose Room. Set the number of groups or students per group.",
+    "sectionId": "1.2.4"
+  },
+  {
+    "no": 33,
+    "category": "Live Class",
+    "question": "When I enter a live class, which content shows first?",
+    "answer": "The system defaults to the first item in the In-Class panel when the class starts.",
+    "sectionId": "1.3"
+  },
+  {
+    "no": 34,
+    "category": "Live Class",
+    "question": "How do I pause the live broadcast?",
+    "answer": "Click the 'Pause Broadcast' button in the top bar of the Live Class view. Students will see a break screen with 'Did You Know' content.",
+    "sectionId": "1.3"
+  },
+  {
+    "no": 35,
+    "category": "Live Class",
+    "question": "What is the 'Did You Know' panel during a Pause?",
+    "answer": "It's an AI-generated fun fact card shown to students while the class is paused. You can also upload your own picture content manually if preferred.",
+    "sectionId": "1.3"
+  },
+  {
+    "no": 36,
+    "category": "Live Class",
+    "question": "How do I use the Whiteboard during class?",
+    "answer": "Click the Whiteboard icon in the bottom action bar during the live class. After you finish, the content is automatically saved and shared with students.",
+    "sectionId": "1.3"
+  },
+  {
+    "no": 37,
+    "category": "Live Class",
+    "question": "What Whiteboard tools are available?",
+    "answer": "The whiteboard includes tools like pen, shapes, text, eraser, undo/redo, and more — enough to draw, annotate, and explain concepts visually.",
+    "sectionId": "1.3"
+  },
+  {
+    "no": 38,
+    "category": "Live Class",
+    "question": "What are Linkage Tools during live class?",
+    "answer": "These are external links (e.g. Figma, Google Colab, EduTech Toolkit) that you pre-attached to content. You can click them during teaching to open supporting resources without leaving the platform.",
+    "sectionId": "1.3"
+  },
+  {
+    "no": 39,
+    "category": "Exercise & Polls",
+    "question": "How do I check who has submitted an exercise during class?",
+    "answer": "In the Exercise view, click the 'Submission Rate' tab. It shows a list of all students who submitted, ordered by submission time.",
+    "sectionId": "1.3.2"
+  },
+  {
+    "no": 40,
+    "category": "Exercise & Polls",
+    "question": "Where can I see the correct answers for an exercise?",
+    "answer": "Click the 'Exercise Results' tab in the exercise view. It displays all questions along with the correct answers and student responses.",
+    "sectionId": "1.3.2"
+  },
+  {
+    "no": 41,
+    "category": "Exercise & Polls",
+    "question": "What does the Poll Results tab show?",
+    "answer": "It shows a summary of all students' responses to the poll question with a visual breakdown of answer choices.",
+    "sectionId": "1.3.2"
+  },
+  {
+    "no": 42,
+    "category": "Submission Review",
+    "question": "How do I review student assignment submissions during class?",
+    "answer": "On the right panel of the live class, find the Assignment section and click 'Submission Review'. This shows the full submission list with status: On time, Late, or Overdue.",
+    "sectionId": "1.3.5"
+  },
+  {
+    "no": 43,
+    "category": "Submission Review",
+    "question": "What information is shown in the Submission Review table?",
+    "answer": "Student ID, Student Name, Submission Status, Submit Time, Cut-Off Date, and a 'Review' button to view each individual submission.",
+    "sectionId": "1.3.5"
+  },
+  {
+    "no": 44,
+    "category": "Breakout Rooms",
+    "question": "How do I open Breakout Rooms during class?",
+    "answer": "Click the Breakout Room icon in the bottom action bar during the live class. A setup modal will appear to configure the rooms.",
+    "sectionId": "1.3.7"
+  },
+  {
+    "no": 45,
+    "category": "Breakout Rooms",
+    "question": "What are the 3 ways to assign students to breakout rooms?",
+    "answer": "1. Assign Automatically – random assignment based on max students per room. 2. Assign Manually – you drag students into specific rooms. 3. Let Students Choose Room – students pick their own room.",
+    "sectionId": "1.3.7"
+  },
+  {
+    "no": 46,
+    "category": "Breakout Rooms",
+    "question": "Can I create breakout rooms based on a Group Assignment?",
+    "answer": "Yes. On the live class right panel, when viewing a Group Assignment, there's an icon to open Breakout Rooms using that assignment's pre-set group members.",
+    "sectionId": "1.3.7"
+  },
+  {
+    "no": 47,
+    "category": "Breakout Rooms",
+    "question": "How do I broadcast a message to all breakout rooms at once?",
+    "answer": "Use the Breakout Room Controller panel and click the broadcast option. You can send a text message to all active rooms simultaneously.",
+    "sectionId": "1.3.7"
+  },
+  {
+    "no": 48,
+    "category": "After Class",
+    "question": "Where can I view a summary of a class after it ends?",
+    "answer": "Go to Courses → select the course → then navigate to the After Class / Class Performance section. You'll see attendance, submission rates, reactions, and unanswered questions.",
+    "sectionId": "1.4.1"
+  },
+  {
+    "no": 49,
+    "category": "After Class",
+    "question": "Can I download a class performance report?",
+    "answer": "Yes. On the Class Performance page, click the 'Download Report' button (top right). The report is downloaded as a CSV file.",
+    "sectionId": "1.4.1"
+  },
+  {
+    "no": 50,
+    "category": "Forum & Schedule",
+    "question": "How do I view my teaching schedule for the whole month?",
+    "answer": "Go to the Schedule page and click the 'Month' toggle (top right). You'll see all classes across the month. Click 'Week' to switch back to the weekly view.",
+    "sectionId": "1.5"
+  }
+]

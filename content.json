@@ -1,0 +1,193 @@
+[
+  {
+    "id": "1.1",
+    "titleEn": "Home",
+    "body": "Introduction This manual will walk you through the key features and functions of the platform step by step. It is intended for both new and experienced users, offering clear instructions, practical tips, and best practices to help you maximize the benefits of the system.",
+    "images": [
+      "1.1_2_1.png",
+      "1.1_3_1.png",
+      "1.1_3_2.png"
+    ]
+  },
+  {
+    "id": "1.1.1",
+    "titleEn": "Top Bar",
+    "body": "No. Feature Description Top Bar The menu allows users to navigate between different pages or sections of the application. Each menu item links to a specific feature or module, enabling quick access to related content. Enter Class Toast Notify everyone who has a class starting in the next 10 minutes. After 10 minutes, the display message will change from “Class will begin shortly…” to “Class is live.”",
+    "images": []
+  },
+  {
+    "id": "1.1.2",
+    "titleEn": "Side Bar",
+    "body": "No. Feature Description Side Bar Notification task from task menu. Unanswered Questions The questions which you didn’t answer from the class. Content Readiness Check The contents from unassign unit and it will close after Unassign unit is empty Assignments Review To view amount which have submitted the assignments Submission Bar Show percentage who have submitted the assignments",
+    "images": []
+  },
+  {
+    "id": "1.1.3",
+    "titleEn": "Class Panel",
+    "body": "No. Feature Description Class Panel Display all classes scheduled for today and the upcoming classes within the current week (Monday to Saturday). Next Class Schedule Display the list of upcoming classes, sorted by the earliest start time. Class Starting Countdown The countdown timer will appear 10 minutes before the scheduled start time. Pre-Class Completion Bar Display the percentage of users who have completed the Pre-Class activities. Enter Class Button After clicking the button, a countdown modal will appear for 5 seconds before entering the Live-Class session. Once the countdown reaches zero, the class will automatically start broadcasting.",
+    "images": []
+  },
+  {
+    "id": "1.2",
+    "titleEn": "Courses",
+    "body": "No. Feature Description Semester Selection Select the appropriate semester. Courses Completion Display the total class count for the course, and denote completed classes in orange. Card’s Course Each card is clickable and navigates to detailed information.",
+    "images": [
+      "1.2_6_1.png"
+    ]
+  },
+  {
+    "id": "1.2.1",
+    "titleEn": "Course Plan",
+    "body": "No. Feature Description Pre-Class Panel All panels support drag-and-drop functionality across panels. In-Class Panel Post-Class Panel Add Content Button Condition: ● If you click on any existing content, the new content will be added immediately after the selected content. Once the content is successfully added, the modal will automatically close. ● If no content is selected, the new content will be added after the last content in the currently selected panel. ● By default, if no panel is selected, the new content will be added after the last content in the Pre-Class panel. Reset to Master Button When performing a reset to master, all data and settings will revert to the master version. However, any completed classes or sub-units will not be reverted. The system checks the completion status of each class or sub-unit from the database (DB) before executing the reset. Update Button After you finish adjusting the content, click the Update button to save your changes. The Update button is used to confirm and store all adjustments made to the content.",
+    "images": [
+      "1.2.1_7_1.png",
+      "1.2.1_7_2.png"
+    ]
+  },
+  {
+    "id": "1.2.2",
+    "titleEn": "Class Management",
+    "body": "No. Feature Description Preview Class Display class preview after adjustment class completed. Unit Level Click to navigate to Class Management. Next Button This button allows users to navigate to the next page. After completing a sub-unit, it will automatically proceed to the next one. When in full-screen mode, users can also use the arrow keys to move between pages.",
+    "images": [
+      "1.2.2_8_1.png"
+    ]
+  },
+  {
+    "id": "1.2.3",
+    "titleEn": "Add/Create Content",
+    "body": "No. Feature Description Create Content You can choose 1 of 6 content types before uploading your content to the platform. Please select the content type that best matches your material to ensure proper display and organization within the system. Master Content Panel Master Content refers to the original content provided by the system. When a course is cloned from the system, all cloned courses will receive the same Master Content as the default content template. My Content Panel My Content refers to the content that you create using your own account. This content is private to your account, and only you can view, adjust, and use it within the platform. Content Detail Content Detail refers to the detailed information of your content. ● The first icon represents the type of your content. ● The second icon indicates that your content has added linkage tools. ● Completed Status refers to the completion status of the content. ● Published Status refers to the assignment status of the content and allows you to adjust the publishing date for students. Edit Icon The Edit icon allows you to edit your content after it has been saved. You can use this icon whenever you need to update or modify the existing content. Preview Icon The Preview icon allows you to view the content after clicking on it. You can use this feature to review how the content will appear before making further changes. Add Button The Add button is used to add your content into your class. Click this button to include the selected content in your class.",
+    "images": [
+      "1.2.3_10_1.png"
+    ]
+  },
+  {
+    "id": "1.2.4",
+    "titleEn": "Add Linkage Tools / Individual or Group Assignment",
+    "body": "No. Feature Description File Upload Panel This panel shows the files that you have uploaded. You can also reupload or replace files in this panel whenever you need to update your content. Title Panel Title is the name of your content. You should enter a clear and descriptive title to help identify the content easily. Linkage Tools Linkage Tools are tools that allow you to upload or attach external links to support learning activities. These tools help connect additional learning resources, websites, videos, or external platforms to your content. Assignment You can add an assignment by clicking the Add button. This allows you to create your class content easily. Assignment type Assignment allows you to create individual or group assignments for students.\nAssignment Setting You can set assignment dates from this panel. ● Publish Date refers to the date when the assignment will be published and become visible to all students. ● Due Date refers to the deadline for submitting the assignment. ● Cut Off Date refers to the final date for assignment submission. After the cut off date, students can still submit their assignments, but their submission will be marked with a late status. Assignment Point Assignment Point allows you to set points or scores for an assignment. You can choose whether the assignment will be graded with points or not. Assignment Advance Setting Assignment Advance Setting allows you to choose additional options for your assignment. ● Random Question means the assignment questions will be randomized for each student. ● One Question at a Time means questions will be displayed one by one to students. ● Both Options means you can enable both settings for the assignment at the same time.",
+    "images": [
+      "1.2.4_12_1.png",
+      "1.2.4_12_2.png",
+      "1.2.4_13_1.png"
+    ]
+  },
+  {
+    "id": "1.3",
+    "titleEn": "Live Class",
+    "body": "No. Feature Description In-Class When the class starts, the content will default to the first item in this panel.",
+    "images": [
+      "1.3_15_1.png"
+    ]
+  },
+  {
+    "id": "1.3.1",
+    "titleEn": "Pause Screen",
+    "body": "No. Feature Description Picture Content You can upload content manually or generate it from the “Did You Know” panel. Did You Know This panel is automatically generated by AI, but manual uploads are also available if preferred. And it will automatically cause suffering on the student screen.",
+    "images": [
+      "1.3.1_16_1.png"
+    ]
+  },
+  {
+    "id": "1.3.2",
+    "titleEn": "Exercise",
+    "body": "No. Feature Description Submission Rate Show all users who have submitted the exercise, arranged in order of submission time, with the earliest submissions displayed first. Exercise Result Display the summary results from the exercise, including the questions and their correct answers.",
+    "images": [
+      "1.3.2_17_1.png",
+      "1.3.2_17_2.png"
+    ]
+  },
+  {
+    "id": "1.3.3",
+    "titleEn": "Polls",
+    "body": "No. Feature Description Polls Result Display the summary results from the student's Poll.",
+    "images": [
+      "1.3.3_18_1.png"
+    ]
+  },
+  {
+    "id": "1.3.4",
+    "titleEn": "Linkage Tools",
+    "body": "No. Feature Description Linkage Tools While you are teaching, you can click the Linkage Tools that you prepared earlier to connect the content with external resources or platforms. This helps you access supporting materials quickly during teaching activities.",
+    "images": [
+      "1.3.4_19_1.png",
+      "1.3.4_19_2.png"
+    ]
+  },
+  {
+    "id": "1.3.5",
+    "titleEn": "Submission Review",
+    "body": "No. Feature Description Submission Review Submission Review allows you to view students’ submission records for assignments or class activities from this panel. You can check submission logs, review student activity, and monitor assignment completion status.",
+    "images": [
+      "1.3.5_20_1.png",
+      "1.3.5_21_1.png"
+    ]
+  },
+  {
+    "id": "1.3.6",
+    "titleEn": "WhiteBoard",
+    "body": "No. Feature Description Whiteboard Whiteboard allows you to use the whiteboard feature from this button during teaching activities. After you finish using the whiteboard, the content will be automatically saved and uploaded for students to view. Whiteboard Tools Whiteboard Tools are the tools available within the whiteboard feature to support teaching and classroom activities.",
+    "images": [
+      "1.3.6_22_1.png",
+      "1.3.6_22_2.png",
+      "1.3.6_23_1.png"
+    ]
+  },
+  {
+    "id": "1.3.7",
+    "titleEn": "Breakout Room",
+    "body": "No. Feature Description Breakout Room Button Clicking this button will open the Breakout Room feature. This feature allows teachers to divide students into smaller groups for discussions, collaboration, or group activities during class sessions. Breakout Room Group Set up In this panel, you can choose 1 of 3 types of breakout rooms. ● Automatic Assign will randomly assign students into each group based on the maximum number of students that you set for each room. ● Manual Assign allows you to manually move active students into each group. You need to specify the number of rooms that you want to create. ● Let Students Choose Room allows students to select and join their preferred breakout room by themselves. Breakout Room Setting This step is used to confirm the information before opening the breakout rooms. Please review the room settings and student assignments\nGroup Assignment carefully before starting the breakout session. Breakout Room Controller Breakout Room Controller allows you to manage breakout room activities during the class session. ● Join each breakout room. ● Send text broadcasts to all breakout rooms. ● Create additional breakout rooms. ● View invite alerts or assistance requests from students and join the room. ● Close breakout rooms when the activity is finished.",
+    "images": [
+      "1.3.7_24_1.png",
+      "1.3.7_24_2.png",
+      "1.3.7_25_1.png"
+    ]
+  },
+  {
+    "id": "1.3.8",
+    "titleEn": "Group Assignment",
+    "body": "No. Feature Description Breakout Room While using breakout rooms, you can also open a new breakout room by using members from a group assignment. To do this, click the Breakout Room icon (shown as number 3 next picture). Group Assignment panel This panel shows that the content has a group assignment. You can view and manage the group assignment information from this panel. Icon open Breakout Room from group assignment This icon is used to connect breakout rooms with group members from the assignment. It helps create breakout rooms automatically based on the assigned student groups.",
+    "images": [
+      "1.3.8_26_1.png"
+    ]
+  },
+  {
+    "id": "1.4",
+    "titleEn": "After Class",
+    "body": "After class activities, You can view classroom summaries from this panel. The summary may include student participation, class attendance, activity records, assignment submissions, and other classroom activity details.",
+    "images": []
+  },
+  {
+    "id": "1.4.1",
+    "titleEn": "Class Performance",
+    "body": "No. Feature Description Overall Class Attendance Overall Class Attendance refers to the overall attendance rate of students in the class session. This information helps teachers monitor student participation and attendance performance throughout the course. Overall Class Submission Overall Class Submission refers to the overall assignment submission rate of students in the class. This information helps teachers monitor how many students have completed and submitted their assignments. Unanswered Questions Unanswered Questions refers to the number of questions that students have not answered during class. This information helps teachers identify incomplete responses and monitor student participation.\nOverall Reactions Overall Reactions refers to the total number of reactions from students during class activities. This information helps teachers measure student engagement and participation throughout the class session. Class Summaries List Class Summaries List displays the summary records of classroom activities for each class session. This list may include attendance, assignment submissions, student reactions, unanswered questions, and other classroom analytics. Download report Download Report allows you to download the report as a CSV file. You can use the downloaded information for review, analysis, or future reference. Class Activities Log Class Activities Log displays the activity records and actions that occurred during the class session. This log may include student participation, assignment activities. Overview (Sort by Student) Displays information organized by students. This view helps teachers review individual student participation, attendance, submissions, reactions, and overall activity performance more easily. Overview (Sort by Assignment) Displays classroom activity information organized by assignment. This view helps teachers review assignment performance, submission status, completion rates, and student participation for each assignment more easily. Unanswered Questions Unanswered Questions displays the questions that students have not answered during class activities or assignments. This section helps teachers identify missing responses and monitor student participation more effectively.",
+    "images": [
+      "1.4.1_28_1.png",
+      "1.4.1_29_1.png",
+      "1.4.1_29_2.png",
+      "1.4.1_30_1.png"
+    ]
+  },
+  {
+    "id": "1.5",
+    "titleEn": "Schedule",
+    "body": "No. Feature Description Current Day This panel displays three different states: ● Live Class – indicated in light blue ● Next Class – indicated in light blue ● Cancelled Class – indicated in light gray Holder Section Hovering over the panel displays a mini menu with the option to join the class. Period Day The state for Period day will indicated in gray Week/Month View To change week view or month view",
+    "images": [
+      "1.5_32_1.png"
+    ]
+  },
+  {
+    "id": "1.6",
+    "titleEn": "Tasks",
+    "body": "No. Feature Description Unanswered Questions The system displays all questions submitted during in-class sessions, organized by class and arranged in descending order by submission time (newest first). Assignments Review The system displays all assignments that have been submitted, organized by class and arranged in descending order by submission date (newest first). Content Readiness Check The system lists all submitted assignments, grouped by class and sorted by the most recent submissions. For each record, it also displays the completed unit and the semester in which it was completed.",
+    "images": [
+      "1.6_33_1.png"
+    ]
+  },
+  {
+    "id": "1.7",
+    "titleEn": "Forum",
+    "body": "No. Feature Description Create Forum Users can create a forum by clicking Create and assigning one or more tracks to any class period. Once the forum is created, the system automatically notifies the corresponding teacher. Filters Forum The filtering function applies only to existing forum data. Future forums cannot be included in the filter results.",
+    "images": [
+      "1.7_34_1.png"
+    ]
+  }
+]

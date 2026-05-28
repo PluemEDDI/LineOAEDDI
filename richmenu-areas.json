@@ -1,0 +1,53 @@
+[
+  {
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 2500,
+      "height": 843
+    },
+    "action": {
+      "type": "uri",
+      "uri": "https://learn.edditech.com/"
+    }
+  },
+  {
+    "bounds": {
+      "x": 0,
+      "y": 843,
+      "width": 833,
+      "height": 843
+    },
+    "action": {
+      "type": "postback",
+      "data": "menu=manual",
+      "displayText": "คู่มือ ManualQA"
+    }
+  },
+  {
+    "bounds": {
+      "x": 833,
+      "y": 843,
+      "width": 833,
+      "height": 843
+    },
+    "action": {
+      "type": "postback",
+      "data": "menu=faq",
+      "displayText": "คำถามเจอบ่อย FAQs"
+    }
+  },
+  {
+    "bounds": {
+      "x": 1666,
+      "y": 843,
+      "width": 834,
+      "height": 843
+    },
+    "action": {
+      "type": "postback",
+      "data": "menu=contact",
+      "displayText": "ติดต่อเรา Contact Admin"
+    }
+  }
+]
