@@ -26,7 +26,7 @@ ROW2_H = H - ROW1_H     # bottom row height  (843 px)
 TOP_BANNER = {
     "th":  "เว็บไซต์",
     "en":  "Visit Website",
-    "action": {"type": "uri", "uri": "https://learn.edditech.com/"},  # ← change URL here
+    "action": {"type": "uri", "uri": "https://learn.edditech.com"},  # ← change URL here
 }
 
 # ── Bottom 3 boxes ───────────────────────────────────────────────────────────

@@ -39,6 +39,13 @@ const PORT = config.server.port;
 const BASE_URL = config.server.baseUrl;
 const channelSecret = process.env.CHANNEL_SECRET || "";
 const channelAccessToken = process.env.CHANNEL_ACCESS_TOKEN || "";
+if (!channelSecret || !channelAccessToken) {
+  console.error(
+    "Refusing to start: CHANNEL_SECRET and CHANNEL_ACCESS_TOKEN must be set " +
+    "(LINE Developers console → Messaging API channel)."
+  );
+  process.exit(1);
+}
 
 const client = new messagingApi.MessagingApiClient({ channelAccessToken });
 const app = express();
@@ -55,9 +62,10 @@ async function setLang(event, lang) {
   if (uid) await userStore.set(uid, "lang", normLang(lang));
 }
 
-// Serve the manual screenshots referenced by image messages.
-app.use("/img", express.static(join(ROOT, "img")));
+// Serve the manual screenshots and videos referenced by messages.
+app.use("/img",     express.static(join(ROOT, "img")));
 app.use("/preview", express.static(join(ROOT, "preview")));
+app.use("/video",   express.static(join(ROOT, "video")));
 app.get("/", (_req, res) => res.send("ManualFAQ LINE bot is running."));
 
 async function messagesFor(event) {

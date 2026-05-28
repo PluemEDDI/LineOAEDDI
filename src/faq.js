@@ -12,6 +12,11 @@ const INDEX = JSON.parse(readFileSync(join(ROOT, "faq-index.json"), "utf8"));
 
 export const faqByNo = new Map(FAQS.map((f) => [f.no, f]));
 
+export const faqCategories = [...new Set(FAQS.map((f) => f.category))];
+export const faqsByCategory = new Map(
+  faqCategories.map((c) => [c, FAQS.filter((f) => f.category === c)])
+);
+
 // Decide what to do with ranked results:
 //   "answer"  -> top is confident AND clearly ahead of the runner-up
 //   "suggest" -> some decent matches but ambiguous: show "did you mean"

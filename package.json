@@ -5,13 +5,16 @@
   "type": "module",
   "main": "src/server.js",
   "scripts": {
-    "start": "node --env-file=.env src/server.js",
+    "start": "node --env-file-if-exists=.env src/server.js",
     "test": "node test/local-test.mjs",
     "test:search": "node test/search-test.mjs",
     "build": "node scripts/build.mjs",
     "build:faq": "node scripts/build_faq.mjs",
     "validate": "node scripts/validate.mjs",
     "setup:richmenu": "node --env-file=.env scripts/setup_richmenu.mjs"
+  },
+  "engines": {
+    "node": ">=20.12"
   },
   "dependencies": {
     "@line/bot-sdk": "^9.5.0",

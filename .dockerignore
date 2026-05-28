@@ -1,0 +1,14 @@
+node_modules
+.git
+.gitignore
+.env
+.env.example
+.DS_Store
+.build-backup
+data
+test
+preview/*.original
+*.md
+PROJECT_SUMMARY.md
+README.md
+CONTEXT.md

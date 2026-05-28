@@ -9,7 +9,7 @@ import {
   normLang,
   t,
 } from "./content.js";
-import { search, classify, faqByNo } from "./faq.js";
+import { search, classify, faqByNo, faqCategories, faqsByCategory } from "./faq.js";
 import { config } from "./config.js";
 
 const MAX_IMAGES = config.reply.maxImages;
@@ -84,6 +84,42 @@ export function buildSection(id, baseUrl, lang) {
 
   messages.push({ type: "text", text, quickReply: quickReply(id, lang) });
   return messages;
+}
+
+// FAQ top-level menu: list categories as selectable buttons.
+export function buildFaqMenu(lang) {
+  const list = faqCategories.map((c, i) => `${i + 1}. ${c}`).join("\n");
+  const items = faqCategories.map((c) =>
+    postbackItem(c, `faqcat=${encodeURIComponent(c)}`)
+  );
+  items.push(postbackItem(t(lang, "mainMenu"), "action=menu"));
+  items.push(postbackItem(t(lang, "langLabel"), "action=lang"));
+  return [
+    {
+      type: "text",
+      text: `${t(lang, "faqMenuPrompt")}\n\n${list}`,
+      quickReply: { items: items.slice(0, 13) },
+    },
+  ];
+}
+
+// Drill-down: FAQs within a chosen category.
+export function buildFaqCategory(category, lang) {
+  const faqs = faqsByCategory.get(category);
+  if (!faqs) return buildFaqMenu(lang);
+  const list = faqs.map((f) => `#${f.no}  ${f.question}`).join("\n");
+  const items = faqs.map((f) =>
+    postbackItem(`#${f.no} ${f.question}`, `faq=${f.no}`)
+  );
+  items.push(postbackItem(t(lang, "back"), "menu=faq"));
+  items.push(postbackItem(t(lang, "mainMenu"), "action=menu"));
+  return [
+    {
+      type: "text",
+      text: `📂 ${category}\n\n${list}`,
+      quickReply: { items: items.slice(0, 13) },
+    },
+  ];
 }
 
 // Language chooser.
@@ -169,21 +205,23 @@ export function buildVideoMessage(videoUrl, previewUrl, trackingId) {
 }
 
 // ── Rich-menu button routes ───────────────────────────────────────────────────
-// VIDEOS — replace the placeholder URLs with your real hosted video + thumbnail.
+// Videos are served from the project's video/ folder via BASE_URL.
+// File: video/Log in.mp4  →  https://<ngrok>/video/Log%20in.mp4
+const _base = config.server.baseUrl;
 const MENU_VIDEOS = {
   manual: {
-    video:   "https://learn.edditech.com/videos/manual-intro.mp4",   // ← your video
-    preview: "https://learn.edditech.com/videos/manual-thumb.jpg",   // ← thumbnail
+    video:      `${_base}/video/Log%20in.mp4`,
+    preview:    `${_base}/video/Log%20in-thumb.jpg`,
     trackingId: "video_manual",
   },
   faq: {
-    video:   "https://learn.edditech.com/videos/faq-intro.mp4",
-    preview: "https://learn.edditech.com/videos/faq-thumb.jpg",
+    video:      `${_base}/video/Log%20in.mp4`,
+    preview:    `${_base}/video/Log%20in-thumb.jpg`,
     trackingId: "video_faq",
   },
   contact: {
-    video:   "https://learn.edditech.com/videos/contact-intro.mp4",
-    preview: "https://learn.edditech.com/videos/contact-thumb.jpg",
+    video:      `${_base}/video/Log%20in.mp4`,
+    preview:    `${_base}/video/Log%20in-thumb.jpg`,
     trackingId: "video_contact",
   },
 };
@@ -191,10 +229,10 @@ const MENU_VIDEOS = {
 function buildMenuVideo(key, lang) {
   const cfg = MENU_VIDEOS[key];
   if (!cfg) return buildMenu(lang);
+  const follow = key === "faq" ? buildFaqMenu(lang) : buildMenu(lang);
   return [
     buildVideoMessage(cfg.video, cfg.preview, cfg.trackingId),
-    // Follow the video with the main menu so the user can navigate next.
-    ...buildMenu(lang),
+    ...follow,
   ];
 }
 
@@ -208,6 +246,9 @@ export function handlePostback(data, baseUrl, lang) {
   // Rich-menu bottom buttons → video intro + main menu
   const menu = params.get("menu");
   if (menu) return buildMenuVideo(menu, lang);
+
+  const faqcat = params.get("faqcat");
+  if (faqcat) return buildFaqCategory(faqcat, lang);
 
   if (params.get("faq")) {
     return buildFaqAnswer(faqByNo.get(Number(params.get("faq"))), baseUrl, lang);
