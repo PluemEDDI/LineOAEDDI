@@ -8,7 +8,7 @@
     },
     "action": {
       "type": "uri",
-      "uri": "https://learn.edditech.com/"
+      "uri": "https://learn.edditech.com"
     }
   },
   {
@@ -19,9 +19,9 @@
       "height": 843
     },
     "action": {
-      "type": "postback",
-      "data": "menu=manual",
-      "displayText": "คู่มือ ManualQA"
+      "type": "richmenuswitch",
+      "richMenuAliasId": "manualfaq-sections",
+      "data": "menu=manual"
     }
   },
   {

@@ -1,0 +1,106 @@
+[
+  {
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 625,
+      "height": 843
+    },
+    "action": {
+      "type": "postback",
+      "data": "section=1.0",
+      "displayText": "1.0 Login"
+    }
+  },
+  {
+    "bounds": {
+      "x": 625,
+      "y": 0,
+      "width": 625,
+      "height": 843
+    },
+    "action": {
+      "type": "postback",
+      "data": "section=1.1",
+      "displayText": "1.1 Home"
+    }
+  },
+  {
+    "bounds": {
+      "x": 1250,
+      "y": 0,
+      "width": 625,
+      "height": 843
+    },
+    "action": {
+      "type": "postback",
+      "data": "section=1.2",
+      "displayText": "1.2 Courses"
+    }
+  },
+  {
+    "bounds": {
+      "x": 1875,
+      "y": 0,
+      "width": 625,
+      "height": 843
+    },
+    "action": {
+      "type": "postback",
+      "data": "section=1.3",
+      "displayText": "1.3 In-Class"
+    }
+  },
+  {
+    "bounds": {
+      "x": 0,
+      "y": 843,
+      "width": 625,
+      "height": 843
+    },
+    "action": {
+      "type": "postback",
+      "data": "section=1.5",
+      "displayText": "1.5 Schedule"
+    }
+  },
+  {
+    "bounds": {
+      "x": 625,
+      "y": 843,
+      "width": 625,
+      "height": 843
+    },
+    "action": {
+      "type": "postback",
+      "data": "section=1.6",
+      "displayText": "1.6 Tasks"
+    }
+  },
+  {
+    "bounds": {
+      "x": 1250,
+      "y": 843,
+      "width": 625,
+      "height": 843
+    },
+    "action": {
+      "type": "postback",
+      "data": "section=1.7",
+      "displayText": "1.7 Forum"
+    }
+  },
+  {
+    "bounds": {
+      "x": 1875,
+      "y": 843,
+      "width": 625,
+      "height": 843
+    },
+    "action": {
+      "type": "richmenuswitch",
+      "richMenuAliasId": "manualfaq-main",
+      "data": "menu=back"
+    }
+  }
+]

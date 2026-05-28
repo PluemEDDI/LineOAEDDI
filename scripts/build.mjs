@@ -20,9 +20,9 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const BACKUP = join(ROOT, ".build-backup");
 
 const PDF = process.env.MANUAL_PDF
-  || join(homedir(), "Downloads", "Lecturer Manual.pdf");
+  || join(ROOT, "Learner Manual.pdf");
 const CSV = process.env.FAQ_CSV
-  || join(homedir(), "Downloads", "Lecturer_FAQ.csv");
+  || join(ROOT, "Learner_FAQ.csv");
 
 // Everything the pipeline produces. Backed up & restored atomically.
 const ARTIFACTS = [

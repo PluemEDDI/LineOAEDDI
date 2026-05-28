@@ -1,6 +1,18 @@
 {
   "sections": [
     {
+      "id": "1.0",
+      "titleEn": "Login",
+      "titleTh": "เข้าสู่ระบบ",
+      "parent": null,
+      "faqCategories": [
+        "Login"
+      ],
+      "images": [
+        "1.0_3_1.png"
+      ]
+    },
+    {
       "id": "1.1",
       "titleEn": "Home",
       "titleTh": "หน้าหลัก",
@@ -9,15 +21,14 @@
         "Home"
       ],
       "images": [
-        "1.1_2_1.png",
-        "1.1_3_1.png",
-        "1.1_3_2.png"
+        "1.1_4_1.png",
+        "1.1_4_2.png"
       ]
     },
     {
       "id": "1.1.1",
       "titleEn": "Top Bar",
-      "titleTh": "แถบเมนูด้านบน",
+      "titleTh": "แถบด้านบน",
       "parent": "1.1",
       "faqCategories": [],
       "images": []
@@ -47,153 +58,128 @@
         "Courses"
       ],
       "images": [
-        "1.2_6_1.png"
+        "1.2_8_1.png"
       ]
     },
     {
       "id": "1.2.1",
-      "titleEn": "Course Plan",
-      "titleTh": "แผนคอร์ส",
+      "titleEn": "Class Management",
+      "titleTh": "การจัดการคลาส",
       "parent": "1.2",
-      "faqCategories": [
-        "Course Plan"
-      ],
+      "faqCategories": [],
       "images": [
-        "1.2.1_7_1.png",
-        "1.2.1_7_2.png"
+        "1.2.1_9_1.png"
       ]
     },
     {
       "id": "1.2.2",
-      "titleEn": "Class Management",
-      "titleTh": "การจัดการคลาส",
+      "titleEn": "Pre-Class, In-Class and Post-Class",
+      "titleTh": "ก่อนเรียน ระหว่างเรียน และหลังเรียน",
       "parent": "1.2",
       "faqCategories": [
-        "Class Management"
+        "Class Phases"
       ],
       "images": [
-        "1.2.2_8_1.png"
+        "1.2.2_10_1.png"
       ]
     },
     {
       "id": "1.2.3",
-      "titleEn": "Add/Create Content",
-      "titleTh": "เพิ่ม/สร้างเนื้อหา",
+      "titleEn": "Buddi AI",
+      "titleTh": "Buddi AI",
       "parent": "1.2",
       "faqCategories": [
-        "Add Content"
+        "Buddi AI"
       ],
       "images": [
-        "1.2.3_10_1.png"
-      ]
-    },
-    {
-      "id": "1.2.4",
-      "titleEn": "Add Linkage Tools / Individual or Group Assignment",
-      "titleTh": "เพิ่มเครื่องมือเชื่อมโยง / งานเดี่ยวหรือกลุ่ม",
-      "parent": "1.2",
-      "faqCategories": [
-        "Assignments"
-      ],
-      "images": [
-        "1.2.4_12_1.png",
-        "1.2.4_12_2.png",
-        "1.2.4_13_1.png"
+        "1.2.3_11_1.png"
       ]
     },
     {
       "id": "1.3",
-      "titleEn": "Live Class",
-      "titleTh": "คลาสสด",
+      "titleEn": "In-Class",
+      "titleTh": "ระหว่างเรียน",
       "parent": null,
       "faqCategories": [
-        "Live Class"
+        "In-Class"
       ],
       "images": [
-        "1.3_15_1.png"
+        "1.3_12_1.png"
       ]
     },
     {
       "id": "1.3.1",
-      "titleEn": "Pause Screen",
-      "titleTh": "หน้าจอพัก",
+      "titleEn": "Mini Player",
+      "titleTh": "หน้าจอย่อ",
       "parent": "1.3",
       "faqCategories": [],
       "images": [
-        "1.3.1_16_1.png"
+        "1.3.1_13_1.png"
       ]
     },
     {
       "id": "1.3.2",
-      "titleEn": "Exercise",
-      "titleTh": "แบบฝึกหัด",
+      "titleEn": "Did You Know",
+      "titleTh": "เกร็ดความรู้",
       "parent": "1.3",
-      "faqCategories": [
-        "Exercise & Polls"
-      ],
+      "faqCategories": [],
       "images": [
-        "1.3.2_17_1.png",
-        "1.3.2_17_2.png"
+        "1.3.2_14_1.png"
       ]
     },
     {
       "id": "1.3.3",
+      "titleEn": "Form",
+      "titleTh": "แบบฟอร์ม",
+      "parent": "1.3",
+      "faqCategories": [],
+      "images": [
+        "1.3.3_15_1.png"
+      ]
+    },
+    {
+      "id": "1.3.4",
+      "titleEn": "Assignment",
+      "titleTh": "งานที่ได้รับมอบหมาย",
+      "parent": "1.3",
+      "faqCategories": [
+        "Assignments"
+      ],
+      "images": [
+        "1.3.4_16_1.png"
+      ]
+    },
+    {
+      "id": "1.3.5",
       "titleEn": "Polls",
       "titleTh": "โพล",
       "parent": "1.3",
       "faqCategories": [],
       "images": [
-        "1.3.3_18_1.png"
+        "1.3.5_17_1.png"
       ]
     },
     {
-      "id": "1.3.4",
+      "id": "1.3.6",
       "titleEn": "Linkage Tools",
       "titleTh": "เครื่องมือเชื่อมโยง",
       "parent": "1.3",
       "faqCategories": [],
       "images": [
-        "1.3.4_19_1.png",
-        "1.3.4_19_2.png"
-      ]
-    },
-    {
-      "id": "1.3.5",
-      "titleEn": "Submission Review",
-      "titleTh": "ตรวจการส่งงาน",
-      "parent": "1.3",
-      "faqCategories": [
-        "Submission Review"
-      ],
-      "images": [
-        "1.3.5_20_1.png",
-        "1.3.5_21_1.png"
-      ]
-    },
-    {
-      "id": "1.3.6",
-      "titleEn": "WhiteBoard",
-      "titleTh": "ไวท์บอร์ด",
-      "parent": "1.3",
-      "faqCategories": [],
-      "images": [
-        "1.3.6_22_1.png",
-        "1.3.6_22_2.png",
-        "1.3.6_23_1.png"
+        "1.3.6_18_1.png"
       ]
     },
     {
       "id": "1.3.7",
       "titleEn": "Breakout Room",
-      "titleTh": "ห้องย่อย (Breakout Room)",
+      "titleTh": "ห้องย่อย",
       "parent": "1.3",
       "faqCategories": [
         "Breakout Rooms"
       ],
       "images": [
-        "1.3.7_24_1.png",
-        "1.3.7_24_2.png",
-        "1.3.7_25_1.png"
+        "1.3.7_19_1.png",
+        "1.3.7_20_1.png"
       ]
     },
     {
@@ -203,30 +189,8 @@
       "parent": "1.3",
       "faqCategories": [],
       "images": [
-        "1.3.8_26_1.png"
-      ]
-    },
-    {
-      "id": "1.4",
-      "titleEn": "After Class",
-      "titleTh": "หลังเลิกเรียน",
-      "parent": null,
-      "faqCategories": [],
-      "images": []
-    },
-    {
-      "id": "1.4.1",
-      "titleEn": "Class Performance",
-      "titleTh": "ผลการเรียนของคลาส",
-      "parent": "1.4",
-      "faqCategories": [
-        "After Class"
-      ],
-      "images": [
-        "1.4.1_28_1.png",
-        "1.4.1_29_1.png",
-        "1.4.1_29_2.png",
-        "1.4.1_30_1.png"
+        "1.3.8_22_1.png",
+        "1.3.8_22_2.png"
       ]
     },
     {
@@ -235,10 +199,10 @@
       "titleTh": "ตารางเรียน",
       "parent": null,
       "faqCategories": [
-        "Forum & Schedule"
+        "Schedule"
       ],
       "images": [
-        "1.5_32_1.png"
+        "1.5_24_1.png"
       ]
     },
     {
@@ -246,9 +210,11 @@
       "titleEn": "Tasks",
       "titleTh": "งานที่ต้องทำ",
       "parent": null,
-      "faqCategories": [],
+      "faqCategories": [
+        "Tasks"
+      ],
       "images": [
-        "1.6_33_1.png"
+        "1.6_25_1.png"
       ]
     },
     {
@@ -256,9 +222,11 @@
       "titleEn": "Forum",
       "titleTh": "ฟอรัม",
       "parent": null,
-      "faqCategories": [],
+      "faqCategories": [
+        "Forum"
+      ],
       "images": [
-        "1.7_34_1.png"
+        "1.7_26_1.png"
       ]
     }
   ]

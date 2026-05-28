@@ -1,6 +1,6 @@
 // Parse the FAQ CSV into faq.json and build a local embedding index
 // (faq-index.json) with transformers.js. Run once, offline-cacheable:
-//   node scripts/build_faq.mjs "/path/to/Lecturer_FAQ.csv"
+//   node scripts/build_faq.mjs "/path/to/Learner_FAQ.csv"
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -9,7 +9,7 @@ import { pipeline } from "@xenova/transformers";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const CSV =
-  process.argv[2] || join(homedir(), "Downloads", "Lecturer_FAQ.csv");
+  process.argv[2] || join(ROOT, "Learner_FAQ.csv");
 export const MODEL = "Xenova/paraphrase-multilingual-MiniLM-L12-v2";
 
 // FAQ Category -> manual section id. Derived from manual.config.json so the
