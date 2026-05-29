@@ -27,9 +27,9 @@ export const normLang = (l) => (LANGS.includes(l) ? l : DEFAULT_LANG);
 export const UI = {
   th: {
     menuPrompt:
-      "เลือกหัวข้อจากคู่มือ — แตะปุ่ม หรือพิมพ์หมายเลข\nChoose a topic:",
+      "เลือกหัวข้อจากคู่มือ — แตะปุ่มด้านล่าง\nChoose a topic:",
     faqMenuPrompt: "เลือกหมวดคำถามที่เจอบ่อย:\nChoose an FAQ category:",
-    subTopics: "— หัวข้อย่อย (แตะปุ่ม/พิมพ์หมายเลข) —",
+    subTopics: "— หัวข้อย่อย (แตะปุ่ม) —",
     menuHint: 'พิมพ์ "menu" เพื่อกลับเมนูหลัก',
     langLabel: "🌐 ภาษา Language",
     back: "⬅ ย้อนกลับ",
@@ -44,9 +44,9 @@ export const UI = {
   },
   en: {
     menuPrompt:
-      "Choose a topic — tap a button or type the number:\nเลือกหัวข้อ:",
+      "Choose a topic — tap a button below:\nเลือกหัวข้อ:",
     faqMenuPrompt: "Choose an FAQ category:\nเลือกหมวดคำถามที่เจอบ่อย:",
-    subTopics: "— Sub-topics (tap a button / type the number) —",
+    subTopics: "— Sub-topics (tap a button) —",
     menuHint: 'Type "menu" for the main menu',
     langLabel: "🌐 Language ภาษา",
     back: "⬅ Back",

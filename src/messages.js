@@ -27,7 +27,7 @@ function postbackItem(label, data) {
 // A typeable list of options, e.g. "1.3  สอนสด". Quick Reply / Rich Menu are
 // mobile-only, so this text list is how PC users navigate.
 function optionList(ids, lang) {
-  return ids.map((id) => `${id}  ${getTitle(id, lang)}`).join("\n");
+  return ids.map((id) => `• ${getTitle(id, lang)}`).join("\n");
 }
 
 function quickReply(id, lang) {
