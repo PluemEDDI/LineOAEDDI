@@ -208,29 +208,84 @@ export function buildVideoMessage(videoUrl, previewUrl, trackingId) {
 // Videos are served from the project's video/ folder via BASE_URL.
 // File: video/Log in.mp4  →  https://<ngrok>/video/Log%20in.mp4
 const _base = config.server.baseUrl;
-const MENU_VIDEOS = {
-  manual: {
+// All clips under video/ are presented as a swipeable Flex carousel of
+// thumbnails. Tapping a tile fires a postback that replies with the
+// corresponding plain `video` message (Flex video hero isn't enabled on this
+// OA, and trackingId chars are tightly restricted, so both are avoided).
+const VIDEO_GALLERY = {
+  login: {
     video:   `${_base}/video/Log%20in.mp4`,
     preview: `${_base}/video/Log%20in-thumb.jpg`,
+    title:   { th: "เข้าสู่ระบบ", en: "Log in" },
   },
-  faq: {
-    video:   `${_base}/video/Log%20in.mp4`,
-    preview: `${_base}/video/Log%20in-thumb.jpg`,
+  ai: {
+    video:   `${_base}/video/Ai.mp4`,
+    preview: `${_base}/video/Ai-thumb.jpg`,
+    title:   { th: "ผู้ช่วย AI", en: "AI Assistant" },
   },
-  contact: {
-    video:   `${_base}/video/Log%20in.mp4`,
-    preview: `${_base}/video/Log%20in-thumb.jpg`,
+  liveclass: {
+    video:   `${_base}/video/LiveClass.mp4`,
+    preview: `${_base}/video/LiveClass-thumb.jpg`,
+    title:   { th: "คลาสสด", en: "Live Class" },
+  },
+  preclass: {
+    video:   `${_base}/video/PreClass.mp4`,
+    preview: `${_base}/video/PreClass-thumb.jpg`,
+    title:   { th: "ก่อนเข้าคลาส", en: "Pre-Class" },
   },
 };
 
+function videoBubble(key, cfg, lang) {
+  const playLabel = lang === "th" ? "▶ เล่นวิดีโอ" : "▶ Play video";
+  const action = { type: "postback", label: playLabel, data: `video=${key}` };
+  return {
+    type: "bubble",
+    size: "mega",
+    hero: {
+      type: "image",
+      url: cfg.preview,
+      size: "full",
+      aspectRatio: "16:9",
+      aspectMode: "cover",
+      action,
+    },
+    body: {
+      type: "box",
+      layout: "vertical",
+      contents: [
+        { type: "text", text: cfg.title[lang] || cfg.title.en, weight: "bold", size: "md", wrap: true },
+      ],
+    },
+    footer: {
+      type: "box",
+      layout: "vertical",
+      contents: [
+        { type: "button", style: "primary", height: "sm", action },
+      ],
+    },
+  };
+}
+
+function buildVideoCarousel(lang) {
+  return {
+    type: "flex",
+    altText: lang === "th" ? "วิดีโอแนะนำ" : "Intro videos",
+    contents: {
+      type: "carousel",
+      contents: Object.entries(VIDEO_GALLERY).map(([k, v]) => videoBubble(k, v, lang)),
+    },
+  };
+}
+
 function buildMenuVideo(key, lang) {
-  const cfg = MENU_VIDEOS[key];
-  if (!cfg) return buildMenu(lang);
   const follow = key === "faq" ? buildFaqMenu(lang) : buildMenu(lang);
-  return [
-    buildVideoMessage(cfg.video, cfg.preview, cfg.trackingId),
-    ...follow,
-  ];
+  return [buildVideoCarousel(lang), ...follow];
+}
+
+function buildVideoPlay(key, lang) {
+  const cfg = VIDEO_GALLERY[key];
+  if (!cfg) return buildMenu(lang);
+  return [buildVideoMessage(cfg.video, cfg.preview)];
 }
 
 // Route a postback (other than action=setlang, handled by the server).
@@ -240,9 +295,13 @@ export function handlePostback(data, baseUrl, lang) {
   if (action === "menu") return buildMenu(lang);
   if (action === "lang") return buildLangPicker(lang);
 
-  // Rich-menu bottom buttons → video intro + main menu
+  // Rich-menu bottom buttons → swipeable video carousel + main menu
   const menu = params.get("menu");
   if (menu) return buildMenuVideo(menu, lang);
+
+  // Tile tapped inside the carousel → play that video
+  const video = params.get("video");
+  if (video) return buildVideoPlay(video, lang);
 
   const faqcat = params.get("faqcat");
   if (faqcat) return buildFaqCategory(faqcat, lang);
