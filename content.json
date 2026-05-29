@@ -2,7 +2,7 @@
   {
     "id": "1.0",
     "titleEn": "Login",
-    "body": "1. Log in นักศึกษา login โดยใช้ email นักศึกษาที่ลงท้ายด้วย .bu.ac.th รหัสผ่านคือ รหัสประจำตัวนักศึกษา 9 หลัก",
+    "body": "1. Log in. Students log in with a student email ending in .bu.ac.th. The password is the 9-digit student ID.",
     "images": [
       "1.0_3_1.png"
     ]
@@ -19,25 +19,25 @@
   {
     "id": "1.1.1",
     "titleEn": "Top Bar",
-    "body": "1. แถบด้านบนแถบเมนูด้านบนช่วยให้นักศึกษาสามารถเปลี่ยนไปยังหน้าหรือส่วนต่างๆของแพลตฟอร์มได้อย่างรวดเร็วเช่น Home, Courses, Schedule, Tasks และ Forum\n2. ข้อความแจ้งเตือนเมื่อเข้าสู่ชั้นเรียนระบบจะแจ้งเตือนเมื่อนักศึกษามีคาบเรียนที่กําลังจะเริ่มกด ‘Join Class’ เพื่อให้นักศึกษาสามารถเข้าสู่ห้องเรียนได้ทันเวลา",
+    "body": "1. Top Bar — the top menu lets students jump quickly to other pages or sections of the platform, such as Home, Courses, Schedule, Tasks, and Forum.\n2. Class notifications — when a class is about to start, the system notifies the student. Tap 'Join Class' to enter the classroom on time.",
     "images": ["1.1.1_5_1.png"]
   },
   {
     "id": "1.1.2",
     "titleEn": "Side Bar",
-    "body": "1. แถบด้านข้างแสดงรายการงานหรือกิจกรรมที่เกี่ยวข้องกับนักศึกษาเพื่อให้นักศึกษาตรวจสอบสิ่งที่ต้องดําเนินการได้ง่าย\n2. Pending Question แสดงรายการคําถามของนักศึกษาจากชั้นเรียนที่กําลังรอคําตอบ\n3. Pre-Class Material ส่วนนี้ทําหน้าที่เป็นเนื้อหานําทางสําหรับแนะนําผู้เรียนให้ทํากิจกรรมก่อนเข้าเรียนตามลําดับก่อนถึงเวลาเรียนที่กําหนด\n4. Due Assignment ระบบแสดงกําหนดส่งงานและช่วยให้ผู้ใช้สามารถเข้าถึงงานปัจจุบันที่ต้องดําเนินการให้เสร็จได้โดยค่าเริ่มต้นระบบจะนําทางไปยังงานที่ยังทําไม่เสร็จ\n5. Submission Bar ระบบจะแสดงจํานวนงานทั้งหมดที่ยังรอดําเนินการและแสดงงานที่ทําเสร็จแล้วด้วยสีส้ม",
+    "body": "1. The side bar lists tasks and activities relevant to the student so they can easily check what needs to be done.\n2. Pending Question — shows the student's in-class questions that are still awaiting an answer.\n3. Pre-Class Material — this section acts as a guide that walks the learner through pre-class activities in order before each scheduled class.\n4. Due Assignment — the system shows assignment deadlines and lets the user jump straight to work that still needs to be completed; by default it navigates to whatever is still unfinished.\n5. Submission Bar — shows the total number of tasks still pending, with completed tasks highlighted in orange.",
     "images": ["1.1.2_6_1.png"]
   },
   {
     "id": "1.1.3",
     "titleEn": "Class Panel",
-    "body": "1. แผงข้อมูลชั้นเรียนแสดงชั้นเรียนทั้งหมดที่มีกําหนดเรียนในวันนี้และชั้นเรียนที่กําลังจะมาถึงภายในสัปดาห์ปัจจุบันตั้งแต่วันจันทร์ถึงวันเสาร์\n2. ตารางเรียนถัดไปแสดงรายการชั้นเรียนที่กําลังจะมาถึงโดยเรียงลําดับจากเวลาเริ่มเรียนที่ใกล้ที่สุด\n3. เวลาในการเรียนแสดงเวลาที่จะต้องเข้าเรียนในแต่ละคาบเรียน\n4. ปุ่มเข้าสู่ชั้นเรียนหลังจากคลิกปุ่ม ‘Enter Class’ จะเป็นการเข้าสู่ห้องเรียนสด / Live-Class session",
+    "body": "1. The Class Panel lists every class scheduled for today plus upcoming classes for the rest of the current week, Monday through Saturday.\n2. The upcoming-class list is sorted by the nearest start time.\n3. Each entry shows the time the student needs to attend that class.\n4. After clicking the 'Enter Class' button, the student enters the live classroom / Live-Class session.",
     "images": ["1.1.3_7_1.png"]
   },
   {
     "id": "1.2",
     "titleEn": "Courses",
-    "body": "1. แถบแสดงภาคการศึกษาใช้สําหรับเลือกภาคการศึกษาที่นักศึกษาต้องการดูรายวิชา\n2. Courses Completion แสดงจํานวนคาบเรียนทั้งหมดของรายวิชาและแสดงสถานะความคืบหน้าของรายวิชานั้น\n3. การ์ดรายวิชาการ์ดรายวิชาสามารถคลิกได้เมื่อนักศึกษาคลิกระบบจะนําไปยังหน้ารายละเอียดของรายวิชานั้น",
+    "body": "1. The semester bar is used to pick the semester whose courses the student wants to see.\n2. Courses Completion — shows the total number of sessions in a course and the student's progress through it.\n3. Course cards — each course card is clickable; clicking one takes the student to that course's detail page.",
     "images": [
       "1.2_8_1.png"
     ]
@@ -45,7 +45,7 @@
   {
     "id": "1.2.1",
     "titleEn": "Class Management",
-    "body": "1. แถบเนื้อหา Class แสดงเนื้อหาการเรียนของคาบเรียนเพื่อให้นักศึกษาสามารถดูสื่อการเรียนกิจกรรมและงานที่เกี่ยวข้องกับคาบเรียนนั้นได้",
+    "body": "1. The Class content bar shows the lesson content for a class session so students can view the materials, activities, and assignments tied to that session.",
     "images": [
       "1.2.1_9_1.png"
     ]
@@ -53,7 +53,7 @@
   {
     "id": "1.2.2",
     "titleEn": "Pre-Class, In-Class and Post-Class",
-    "body": "1. แถบ Pre-Class แสดงรายการเนื้อหาหรือกิจกรรมที่นักศึกษาควรทําก่อนเริ่มคาบเรียน\n2. แถบ In-Class แสดงรายการเนื้อหาหรือกิจกรรมที่ใช้ระหว่างคาบเรียน\n3. แถบ Post-Class แสดงรายการเนื้อหาหรือกิจกรรมที่นักศึกษาต้องทําหลังจบคาบเรียน\n4. ปุ่ม Download ใช้สําหรับดาวน์โหลดเนื้อหาของแต่ละหน่วยย่อยโดยรองรับเฉพาะไฟล์ประเภทข้อความและไฟล์ PDF เท่านั้น\n5. ปุ่ม Mark as Complete นักศึกษาจะสามารถกดเมื่อเนื้อหาที่นักศึกษาทํากิจกรรมก่อนเข้าเรียนหรือหลังเรียนเสร็จเรียบร้อยแล้ว",
+    "body": "1. Pre-Class tab — lists content or activities students should complete before class begins.\n2. In-Class tab — lists content or activities used during the class session.\n3. Post-Class tab — lists content or activities students need to complete after class ends.\n4. Download button — downloads the content of each sub-unit; only text files and PDFs are supported.\n5. Mark as Complete button — students tap this once they've finished a pre-class or post-class activity.",
     "images": [
       "1.2.2_10_1.png"
     ]
@@ -61,7 +61,7 @@
   {
     "id": "1.2.3",
     "titleEn": "Buddi AI",
-    "body": "1. ปุ่มเรียก AI นักศึกษาสามารถกดปุ่มเรียก AI เพื่อสอบถามเกี่ยวกับเนื้อหาในบทเรียนได้\n2. AI Chat นักศึกษาสามารถพิมพ์เพื่อสอบถามเนื้อหาหรือสรุปเนื้อหาในสัปดาห์ที่เรียนแล้วและกําลังจะมาถึงได้ (ไม่สามารถสอบถามเนื้อหาของสัปดาห์ที่ยังไม่ถึงหรือยังไม่ได้เปิดให้เรียนได้)",
+    "body": "1. AI button — students can tap the AI button to ask questions about the lesson content.\n2. AI Chat — students can type to ask about lesson content or to summarize material from past or upcoming weeks (it can't answer about weeks that haven't been released yet).",
     "images": [
       "1.2.3_11_1.png"
     ]
@@ -69,7 +69,7 @@
   {
     "id": "1.3",
     "titleEn": "In-Class",
-    "body": "1. แถบเนื้อหาหน่วยย่อยนักศึกษาสามารถกดเพื่อดูเนื้อหาใน Pre-Class, In-Class และ Post-Class รวมถึงทํากิจกรรมในคาบที่กําลังเรียนอยู่ได้",
+    "body": "1. The sub-unit content bar lets students tap to view Pre-Class, In-Class, and Post-Class content, and to do the activities in the session currently being taught.",
     "images": [
       "1.3_12_1.png"
     ]
@@ -77,7 +77,7 @@
   {
     "id": "1.3.1",
     "titleEn": "Mini Player",
-    "body": "1. จอขนาดเล็กแสดงผลหน้าจอที่อาจารย์กําลังสอนอยู่ซึ่งนักศึกษาสามารถกดดูแบบเต็มจอได้",
+    "body": "1. A small screen showing what the instructor is currently presenting; students can tap it to view full-screen.",
     "images": [
       "1.3.1_13_1.png"
     ]
@@ -85,7 +85,7 @@
   {
     "id": "1.3.2",
     "titleEn": "Did You Know",
-    "body": "1. เนื้อหารูปภาพรูปภาพประกอบหน้าเกร็ดความรู้ที่จะแสดงให้นักศึกษาเห็นระหว่างอาจารย์พักการถ่ายทอดสด\n2. เนื้อหา Did You Know เกร็ดความรู้ที่แสดงให้นักศึกษาเรียนรู้ระหว่างที่อาจารย์พักการถ่ายทอดสด",
+    "body": "1. The image content — an illustration on the trivia screen that appears to students while the instructor is on a break from the live broadcast.\n2. Did You Know content — short knowledge tidbits shown to students while the instructor pauses the live broadcast.",
     "images": [
       "1.3.2_14_1.png"
     ]
@@ -93,7 +93,7 @@
   {
     "id": "1.3.3",
     "titleEn": "Form",
-    "body": "1. ปุ่ม Submit ใช้สําหรับส่งคําตอบหรือข้อมูลที่นักศึกษากรอกในแบบฟอร์มเมื่อส่งแล้วระบบจะบันทึกผลการตอบของนักศึกษา (หลังจากนั้นนักศึกษาต้องกดปุ่ม ‘Mark as Complete’ เพื่อยืนยันว่าทํากิจกรรมนี้เสร็จแล้ว)",
+    "body": "1. The Submit button sends the answers or information the student has filled in. Once submitted, the system records the student's response. (The student must then tap 'Mark as Complete' to confirm the activity is finished.)",
     "images": [
       "1.3.3_15_1.png"
     ]
@@ -101,7 +101,7 @@
   {
     "id": "1.3.4",
     "titleEn": "Assignment",
-    "body": "1. รายละเอียด Assignment แสดงรายละเอียดของงานเช่นชื่องานวันที่เผยแพร่วันครบกําหนดคะแนนและจํานวนคําถาม",
+    "body": "1. Assignment details — shows the assignment's information such as title, release date, due date, score, and number of questions.",
     "images": [
       "1.3.4_16_1.png"
     ]
@@ -109,7 +109,7 @@
   {
     "id": "1.3.5",
     "titleEn": "Polls",
-    "body": "1. Poll แสดงคําถามแบบ Poll เพื่อให้นักศึกษาสามารถเลือกคําตอบและส่งความคิดเห็นได้",
+    "body": "1. Poll — displays a poll question so students can pick an answer and submit their response.",
     "images": [
       "1.3.5_17_1.png"
     ]
@@ -117,7 +117,7 @@
   {
     "id": "1.3.6",
     "titleEn": "Linkage Tools",
-    "body": "1. แถบ Linkage Tools แสดงเครื่องมือหรือลิงก์ภายนอกที่ผู้สอนเตรียมไว้ประกอบการเรียนนักศึกษาสามารถคลิกเพื่อเปิดแหล่งเรียนรู้หรือเว็บไซต์อื่นที่เกี่ยวข้องกับเนื้อหาได้",
+    "body": "1. The Linkage Tools bar shows external tools or links the instructor has prepared for the lesson. Students can click to open the related learning resource or website.",
     "images": [
       "1.3.6_18_1.png"
     ]
@@ -125,7 +125,7 @@
   {
     "id": "1.3.7",
     "titleEn": "Breakout Room",
-    "body": "1. แถบ Member ใช้สําหรับดูรายชื่อสมาชิกที่อยู่ในห้องย่อยเดียวกับนักศึกษา\n2. แถบ Chat ใช้สําหรับส่งข้อความภายในห้องย่อยระหว่างการทํากิจกรรมกลุ่มหรือพูดคุยกับ Buddi AI",
+    "body": "1. Member tab — shows the list of members in the same breakout room as the student.\n2. Chat tab — used to send messages within the breakout room during group activities, or to chat with Buddi AI.",
     "images": [
       "1.3.7_19_1.png",
       "1.3.7_20_1.png"
@@ -134,7 +134,7 @@
   {
     "id": "1.3.8",
     "titleEn": "Group Assignment",
-    "body": "1. แถบกิจกรรมกลุ่มนักศึกษาสามารถกดเข้าไปเพื่อดูประวัติการส่งงานและรายชื่อสมาชิกในกลุ่มได้\n2. ปุ่ม View Assignment นักศึกษาสามารถกดปุ่ม ‘View Assignment’ เพื่อตรวจและทํา Assignment ใหม่ได้\n3. แถบข้อมูล Group Assignment แสดงข้อมูลงานกลุ่มที่นักศึกษาได้รับมอบหมายเช่นชื่องานวันส่งงานรายละเอียดงานและสถานะการส่งงาน\n4. แถบรายละเอียดกิจกรรมกลุ่มแสดงประวัติการส่งงานของกลุ่มนักศึกษาและรายชื่อสมาชิกกลุ่ม",
+    "body": "1. Group activity bar — students can tap into it to view submission history and the list of group members.\n2. View Assignment button — students can tap 'View Assignment' to review and redo the assignment.\n3. Group Assignment info bar — shows information about the assigned group work, such as title, due date, description, and submission status.\n4. Group activity detail bar — shows the group's submission history and the list of group members.",
     "images": [
       "1.3.8_22_1.png",
       "1.3.8_22_2.png"
@@ -143,7 +143,7 @@
   {
     "id": "1.5",
     "titleEn": "Schedule",
-    "body": "1. วันที่ปัจจุบันแสดงสถานะของคาบเรียนในวันปัจจุบัน\n2. ส่วนพื้นที่แสดงข้อมูลเมื่อนักศึกษาชี้ไปที่รายการคาบเรียนระบบจะแสดงเมนูย่อยสําหรับเข้าร่วมคาบเรียน\n3. ช่วงวันแสดงสถานะของวันที่มีคาบเรียนตามตารางเรียน\n4. มุมมอง Week/Month ใช้สําหรับเปลี่ยนมุมมองตารางเรียนระหว่างรายสัปดาห์และรายเดือน",
+    "body": "1. Today's date shows the status of today's class sessions.\n2. The info area — when the student hovers over a class entry, the system shows a sub-menu for joining the class.\n3. The date range shows which days have classes scheduled.\n4. The Week/Month view toggle switches the schedule between weekly and monthly views.",
     "images": [
       "1.5_24_1.png"
     ]
@@ -151,7 +151,7 @@
   {
     "id": "1.6",
     "titleEn": "Tasks",
-    "body": "1. Pending Question แสดงรายการคําถามของนักศึกษาจากชั้นเรียนที่กําลังรอคําตอบทั้งหมด\n2. Due Assignment ระบบจะแสดงกําหนดส่งงานทั้งหมดที่ยังค้างอยู่\n3. Pre-Class Material ส่วนนี้แสดงกิจกรรมที่แนะนําให้นักศึกษาทําก่อนเข้าเรียนที่มีทั้งหมด",
+    "body": "1. Pending Question — shows every in-class question the student has asked that is still awaiting an answer.\n2. Due Assignment — the system shows every outstanding assignment deadline.\n3. Pre-Class Material — this section shows all recommended pre-class activities for the student to complete.",
     "images": [
       "1.6_25_1.png"
     ]
@@ -159,7 +159,7 @@
   {
     "id": "1.7",
     "titleEn": "Forum",
-    "body": "1. Create Forum นักศึกษาสามารถสร้างกระทู้ใน Forum โดยคลิกปุ่ม Create และเลือกหัวข้อหรือห้องเรียนที่เกี่ยวข้องกับคําถามหรือประเด็นที่ต้องการพูดคุย\n2. Filters Forum ใช้สําหรับกรองรายการกระทู้ที่มีอยู่ในระบบเพื่อช่วยให้นักศึกษาค้นหากระทู้ที่เกี่ยวข้องได้ง่ายขึ้น",
+    "body": "1. Create Forum — students can create a forum thread by clicking Create and choosing the topic or class related to the question or issue they want to discuss.\n2. Forum Filters — used to filter the existing list of threads so students can find relevant ones more easily.",
     "images": [
       "1.7_26_1.png"
     ]

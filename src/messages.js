@@ -225,7 +225,7 @@ const VIDEO_GALLERY = {
   },
   liveclass: {
     video:   `${_base}/video/LiveClass/LiveClass.mp4`,
-    preview: `${_base}/video/LiveClass/LiveClass-thumb.png`,
+    preview: `${_base}/video/LiveClass/3.png`,
     title:   { th: "คลาสสด", en: "Live Class" },
   },
   preclass: {

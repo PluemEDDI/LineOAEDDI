@@ -1,7 +1,7 @@
 {
   "_note": "Auto-derived from Thai PDF; identical to content.json body.",
   "1.0": {
-    "bodyTh": "1. Log in นักศึกษา login โดยใช้ email นักศึกษาที่ลงท้ายด้วย .bu.ac.th"
+    "bodyTh": "1. Log in นักศึกษา login โดยใช้ email นักศึกษาที่ลงท้ายด้วย .bu.ac.th รหัสผ่านคือ รหัสประจำตัวนักศึกษา 9 หลัก"
   },
   "1.1": {
     "bodyTh": "1.1. Home"
