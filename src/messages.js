@@ -214,24 +214,29 @@ const _base = config.server.baseUrl;
 // OA, and trackingId chars are tightly restricted, so both are avoided).
 const VIDEO_GALLERY = {
   login: {
-    video:   `${_base}/video/Log%20in.mp4`,
-    preview: `${_base}/video/Log%20in-thumb.jpg`,
+    video:   `${_base}/video/Log%20in/Log%20in.mp4`,
+    preview: `${_base}/video/Log%20in/1.png`,
     title:   { th: "เข้าสู่ระบบ", en: "Log in" },
   },
   ai: {
-    video:   `${_base}/video/Ai.mp4`,
-    preview: `${_base}/video/Ai-thumb.jpg`,
+    video:   `${_base}/video/Ai/AI.mp4`,
+    preview: `${_base}/video/Ai/ปก%20Manual.png`,
     title:   { th: "ผู้ช่วย AI", en: "AI Assistant" },
   },
   liveclass: {
-    video:   `${_base}/video/LiveClass.mp4`,
-    preview: `${_base}/video/LiveClass-thumb.jpg`,
+    video:   `${_base}/video/LiveClass/LiveClass.mp4`,
+    preview: `${_base}/video/LiveClass/LiveClass-thumb.png`,
     title:   { th: "คลาสสด", en: "Live Class" },
   },
   preclass: {
-    video:   `${_base}/video/PreClass.mp4`,
-    preview: `${_base}/video/PreClass-thumb.jpg`,
+    video:   `${_base}/video/PreClass/PreClass.mp4`,
+    preview: `${_base}/video/PreClass/2.png`,
     title:   { th: "ก่อนเข้าคลาส", en: "Pre-Class" },
+  },
+  webforum: {
+    video: `${_base}/video/Forum/Forum.mp4`,
+    preview: `${_base}/video/Forum/5.png`,
+    title: { th: "ฟอรัม", en: "Forum" },
   },
 };
 
