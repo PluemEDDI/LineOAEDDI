@@ -31,7 +31,7 @@
       "titleTh": "แถบด้านบน",
       "parent": "1.1",
       "faqCategories": [],
-      "images": []
+      "images": ["1.1.1_5_1.png"]
     },
     {
       "id": "1.1.2",
@@ -39,7 +39,7 @@
       "titleTh": "แถบด้านข้าง",
       "parent": "1.1",
       "faqCategories": [],
-      "images": []
+      "images": ["1.1.2_6_1.png"]
     },
     {
       "id": "1.1.3",
@@ -47,7 +47,7 @@
       "titleTh": "แผงคลาสเรียน",
       "parent": "1.1",
       "faqCategories": [],
-      "images": []
+      "images": ["1.1.3_7_1.png"]
     },
     {
       "id": "1.2",
