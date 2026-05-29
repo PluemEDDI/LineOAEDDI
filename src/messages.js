@@ -210,19 +210,16 @@ export function buildVideoMessage(videoUrl, previewUrl, trackingId) {
 const _base = config.server.baseUrl;
 const MENU_VIDEOS = {
   manual: {
-    video:      `${_base}/video/Log%20in.mp4`,
-    preview:    `${_base}/video/Log%20in-thumb.jpg`,
-    trackingId: "video_manual",
+    video:   `${_base}/video/Log%20in.mp4`,
+    preview: `${_base}/video/Log%20in-thumb.jpg`,
   },
   faq: {
-    video:      `${_base}/video/Log%20in.mp4`,
-    preview:    `${_base}/video/Log%20in-thumb.jpg`,
-    trackingId: "video_faq",
+    video:   `${_base}/video/Log%20in.mp4`,
+    preview: `${_base}/video/Log%20in-thumb.jpg`,
   },
   contact: {
-    video:      `${_base}/video/Log%20in.mp4`,
-    preview:    `${_base}/video/Log%20in-thumb.jpg`,
-    trackingId: "video_contact",
+    video:   `${_base}/video/Log%20in.mp4`,
+    preview: `${_base}/video/Log%20in-thumb.jpg`,
   },
 };
 
