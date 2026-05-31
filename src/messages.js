@@ -221,23 +221,44 @@ const VIDEO_GALLERY = {
   ai: {
     video:   `${_base}/video/Ai/AI.mp4`,
     preview: `${_base}/video/Ai/ปก%20Manual.png`,
-    title:   { th: "ผู้ช่วย AI", en: "AI Assistant" },
+    title:   { th: "AI Assistant", en: "AI Assistant" },
   },
   liveclass: {
     video:   `${_base}/video/LiveClass/LiveClass.mp4`,
     preview: `${_base}/video/LiveClass/3.png`,
-    title:   { th: "คลาสสด", en: "Live Class" },
+    title:   { th: "Live Class", en: "Live Class" },
   },
   preclass: {
     video:   `${_base}/video/PreClass/PreClass.mp4`,
     preview: `${_base}/video/PreClass/2.png`,
-    title:   { th: "ก่อนเข้าคลาส", en: "Pre-Class" },
+    title:   { th: "Pre Class", en: "Pre-Class" },
   },
   webforum: {
     video: `${_base}/video/Forum/Forum.mp4`,
     preview: `${_base}/video/Forum/5.png`,
-    title: { th: "ฟอรัม", en: "Forum" },
+    title: { th: "Forum", en: "Forum" },
   },
+  assingment: {
+    video: `${_base}/video/Assingment/Assingment.mp4`,
+    preview: `${_base}/video/Assingment/8.png`,
+    title: { th: "Assignment", en: "Assignment" },
+  },
+  task: {
+    video: `${_base}/video/Task/Task.mp4`,
+    preview: `${_base}/video/Task/7.png`,
+    title: { th: "Task", en: "Task" },
+  },
+  schedual: {
+    video: `${_base}/video/Schedual/Schedual.mp4`,
+    preview: `${_base}/video/Schedual/6.png`,
+    title: { th: "Schedule", en: "Schedule" },
+  },
+  progress: {
+    video: `${_base}/video/Progress%20Tracking/Progress.mp4`,
+    preview: `${_base}/video/Progress%20Tracking/ปก%20Manual.png`,
+    title: { th: "Progress", en: "Progress" },
+  },
+  
 };
 
 function videoBubble(key, cfg, lang) {
