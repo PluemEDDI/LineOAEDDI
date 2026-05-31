@@ -239,8 +239,8 @@ const VIDEO_GALLERY = {
     title: { th: "Forum", en: "Forum" },
   },
   assingment: {
-    video: `${_base}/video/Assingment/Assingment.mp4`,
-    preview: `${_base}/video/Assingment/8.png`,
+    video: `${_base}/video/Assignment/Assignment.mp4`,
+    preview: `${_base}/video/Assignment/8.png`,
     title: { th: "Assignment", en: "Assignment" },
   },
   task: {
