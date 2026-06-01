@@ -62,10 +62,10 @@ async function setLang(event, lang) {
   if (uid) await userStore.set(uid, "lang", normLang(lang));
 }
 
-// Serve the manual screenshots and videos referenced by messages.
+// Serve the manual screenshots referenced by messages. Videos are hosted on
+// YouTube, so no /video static mount is needed.
 app.use("/img",     express.static(join(ROOT, "img")));
 app.use("/preview", express.static(join(ROOT, "preview")));
-app.use("/video",   express.static(join(ROOT, "video")));
 app.get("/", (_req, res) => res.send("ManualFAQ LINE bot is running."));
 
 async function messagesFor(event) {

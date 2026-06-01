@@ -14,7 +14,6 @@ COPY scripts ./scripts
 COPY content.json faq.json faq-index.json manual.config.json translations.th.json richmenu-areas.json ./
 COPY img ./img
 COPY preview ./preview
-COPY video ./video
 RUN chown -R node:node /app
 USER node
 EXPOSE 3000

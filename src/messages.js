@@ -189,87 +189,36 @@ export function buildFaqSuggestions(results, lang) {
   ];
 }
 
-// ── Video Message ─────────────────────────────────────────────────────────────
-// Builds a LINE video message object.
-// videoUrl  : HTTPS URL of the .mp4 file
-// previewUrl: HTTPS URL of the thumbnail image shown before playback
-// trackingId: optional, used by LINE to track views (string, max 100 chars)
-export function buildVideoMessage(videoUrl, previewUrl, trackingId) {
-  const msg = {
-    type: "video",
-    originalContentUrl: videoUrl,   // must be HTTPS, ≤200 MB, mp4
-    previewImageUrl: previewUrl,    // must be HTTPS, ≤1 MB, JPEG/PNG
-  };
-  if (trackingId) msg.trackingId = trackingId;  // enables delivery analytics
-  return msg;
-}
-
 // ── Rich-menu button routes ───────────────────────────────────────────────────
-// Videos are served from the project's video/ folder via BASE_URL.
-// File: video/Log in.mp4  →  https://<ngrok>/video/Log%20in.mp4
-const _base = config.server.baseUrl;
-// All clips under video/ are presented as a swipeable Flex carousel of
-// thumbnails. Tapping a tile fires a postback that replies with the
-// corresponding plain `video` message (Flex video hero isn't enabled on this
-// OA, and trackingId chars are tightly restricted, so both are avoided).
-const VIDEO_GALLERY = {
-  login: {
-    video:   `${_base}/video/Log%20in/Log%20in.mp4`,
-    preview: `${_base}/video/Log%20in/1.png`,
-    title:   { th: "เข้าสู่ระบบ", en: "Log in" },
-  },
-  ai: {
-    video:   `${_base}/video/Ai/AI.mp4`,
-    preview: `${_base}/video/Ai/ปก%20Manual.png`,
-    title:   { th: "AI Assistant", en: "AI Assistant" },
-  },
-  liveclass: {
-    video:   `${_base}/video/LiveClass/LiveClass.mp4`,
-    preview: `${_base}/video/LiveClass/3.png`,
-    title:   { th: "Live Class", en: "Live Class" },
-  },
-  preclass: {
-    video:   `${_base}/video/PreClass/PreClass.mp4`,
-    preview: `${_base}/video/PreClass/2.png`,
-    title:   { th: "Pre Class", en: "Pre-Class" },
-  },
-  webforum: {
-    video: `${_base}/video/Forum/Forum.mp4`,
-    preview: `${_base}/video/Forum/5.png`,
-    title: { th: "Forum", en: "Forum" },
-  },
-  assingment: {
-    video: `${_base}/video/Assignment/Assignment.mp4`,
-    preview: `${_base}/video/Assignment/8.png`,
-    title: { th: "Assignment", en: "Assignment" },
-  },
-  task: {
-    video: `${_base}/video/Task/Task.mp4`,
-    preview: `${_base}/video/Task/7.png`,
-    title: { th: "Task", en: "Task" },
-  },
-  schedual: {
-    video: `${_base}/video/Schedual/Schedual.mp4`,
-    preview: `${_base}/video/Schedual/6.png`,
-    title: { th: "Schedule", en: "Schedule" },
-  },
-  progress: {
-    video: `${_base}/video/Progress%20Tracking/Progress.mp4`,
-    preview: `${_base}/video/Progress%20Tracking/ปก%20Manual.png`,
-    title: { th: "Progress", en: "Progress" },
-  },
-  
-};
+// Videos live on YouTube — the bot never serves the mp4 itself. Tapping a tile
+// opens the YouTube URL in LINE's in-app browser. Thumbnails are pulled from
+// YouTube's CDN (img.youtube.com/vi/<id>/hqdefault.jpg, JPEG, ~30 KB, well
+// under LINE's 1 MB preview cap). This keeps the Railway container memory
+// footprint flat and removes the need to ship mp4s in the repo.
+const ytThumb = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+const ytUrl   = (id) => `https://youtu.be/${id}`;
 
-function videoBubble(key, cfg, lang) {
-  const playLabel = lang === "th" ? "▶ เล่นวิดีโอ" : "▶ Play video";
-  const action = { type: "postback", label: playLabel, data: `video=${key}` };
+const VIDEO_GALLERY = [
+  { id: "gf4C9Nw2J_I", title: { th: "เข้าสู่ระบบ EDDI",    en: "How to Login EDDI" } },
+  { id: "GnhZTb28hHs", title: { th: "ใช้งาน Live Class",   en: "How to Use Live Class" } },
+  { id: "ZuEkreMZDMk", title: { th: "เรียนก่อนเข้าคลาส",   en: "Complete Your Pre-Class Learning" } },
+  { id: "IuW6hVuFZDI", title: { th: "ส่งงาน",               en: "How to Submit an Assignment" } },
+  { id: "kCNXo71nbgs", title: { th: "ใช้งาน Buddy AI",     en: "How to Use Buddy AI" } },
+  { id: "br0SU_XuxSI", title: { th: "ติดตามความคืบหน้า",   en: "Track Your Learning Progress" } },
+  { id: "76mXpjIJv9c", title: { th: "ตารางเรียน",           en: "Schedule Guide" } },
+  { id: "lE8cM8UucG4", title: { th: "งานที่ต้องทำ",          en: "How to Use Tasks" } },
+  { id: "LCpODlU4sIM", title: { th: "ฟอรัม",                en: "How to Use Forum" } },
+];
+
+function videoBubble({ id, title }, lang) {
+  const label = lang === "th" ? "▶ ดูบน YouTube" : "▶ Watch on YouTube";
+  const action = { type: "uri", label, uri: ytUrl(id) };
   return {
     type: "bubble",
     size: "mega",
     hero: {
       type: "image",
-      url: cfg.preview,
+      url: ytThumb(id),
       size: "full",
       aspectRatio: "16:9",
       aspectMode: "cover",
@@ -279,15 +228,13 @@ function videoBubble(key, cfg, lang) {
       type: "box",
       layout: "vertical",
       contents: [
-        { type: "text", text: cfg.title[lang] || cfg.title.en, weight: "bold", size: "md", wrap: true },
+        { type: "text", text: title[lang] || title.en, weight: "bold", size: "md", wrap: true },
       ],
     },
     footer: {
       type: "box",
       layout: "vertical",
-      contents: [
-        { type: "button", style: "primary", height: "sm", action },
-      ],
+      contents: [{ type: "button", style: "primary", height: "sm", action }],
     },
   };
 }
@@ -298,7 +245,8 @@ function buildVideoCarousel(lang) {
     altText: lang === "th" ? "วิดีโอแนะนำ" : "Intro videos",
     contents: {
       type: "carousel",
-      contents: Object.entries(VIDEO_GALLERY).map(([k, v]) => videoBubble(k, v, lang)),
+      // LINE allows up to 12 bubbles per carousel.
+      contents: VIDEO_GALLERY.slice(0, 12).map((v) => videoBubble(v, lang)),
     },
   };
 }
@@ -308,12 +256,6 @@ function buildMenuVideo(key, lang) {
   return [buildVideoCarousel(lang), ...follow];
 }
 
-function buildVideoPlay(key, lang) {
-  const cfg = VIDEO_GALLERY[key];
-  if (!cfg) return buildMenu(lang);
-  return [buildVideoMessage(cfg.video, cfg.preview)];
-}
-
 // Route a postback (other than action=setlang, handled by the server).
 export function handlePostback(data, baseUrl, lang) {
   const params = new URLSearchParams(data);
@@ -321,13 +263,9 @@ export function handlePostback(data, baseUrl, lang) {
   if (action === "menu") return buildMenu(lang);
   if (action === "lang") return buildLangPicker(lang);
 
-  // Rich-menu bottom buttons → swipeable video carousel + main menu
+  // Rich-menu bottom buttons → swipeable YouTube video carousel + main menu
   const menu = params.get("menu");
   if (menu) return buildMenuVideo(menu, lang);
-
-  // Tile tapped inside the carousel → play that video
-  const video = params.get("video");
-  if (video) return buildVideoPlay(video, lang);
 
   const faqcat = params.get("faqcat");
   if (faqcat) return buildFaqCategory(faqcat, lang);
