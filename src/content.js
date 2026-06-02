@@ -98,6 +98,8 @@ export function formatBody(raw) {
   return raw
     .replace(/No\.\s*Feature\s*Description/g, "")
     .replace(/\s*●\s*/g, "\n• ")
+    // Drop leading numbering on each line — "1.1. Home" / "1. Log in …" → bare text.
+    .replace(/^\s*\d+(?:\.\d+)*[.)]?\s*/gm, "")
     .replace(/[ \t]+/g, " ")
     .trim()
     .slice(0, config.ui.bodyMaxChars);

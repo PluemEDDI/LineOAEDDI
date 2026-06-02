@@ -9,7 +9,7 @@ import {
   normLang,
   t,
 } from "./content.js";
-import { search, classify, faqByNo, faqCategories, faqsByCategory } from "./faq.js";
+import { faqByNo, faqCategories, faqsByCategory } from "./faq.js";
 import { config } from "./config.js";
 
 const MAX_IMAGES = config.reply.maxImages;
@@ -281,7 +281,8 @@ export function handlePostback(data, baseUrl, lang) {
 }
 
 // Route typed text. Commands and section/FAQ numbers are handled directly;
-// anything else is treated as a question and runs semantic FAQ search.
+// anything else gets the menu (free-text semantic search is disabled to keep
+// runtime memory low — the bot is button-driven).
 export async function handleText(input, baseUrl, lang) {
   const s = (input || "").trim();
   if (/^(menu|เมนู|start|เริ่ม)$/i.test(s)) return buildMenu(lang);
@@ -294,10 +295,6 @@ export async function handleText(input, baseUrl, lang) {
     return buildFaqAnswer(faqByNo.get(Number(s)), baseUrl, lang); // typed "#29"
   }
 
-  const results = await search(s, 3);
-  const verdict = classify(results);
-  if (verdict === "answer") return buildFaqAnswer(results[0].faq, baseUrl, lang);
-  if (verdict === "suggest") return buildFaqSuggestions(results, lang);
   return [{ type: "text", text: t(lang, "notFound") }, ...buildMenu(lang)];
 }
 

@@ -9,7 +9,7 @@
     "action": {
       "type": "postback",
       "data": "section=1.0",
-      "displayText": "1.0 Login"
+      "displayText": "Login"
     }
   },
   {
@@ -22,7 +22,7 @@
     "action": {
       "type": "postback",
       "data": "section=1.1",
-      "displayText": "1.1 Home"
+      "displayText": "Home"
     }
   },
   {
@@ -35,7 +35,7 @@
     "action": {
       "type": "postback",
       "data": "section=1.2",
-      "displayText": "1.2 Courses"
+      "displayText": "Courses"
     }
   },
   {
@@ -48,7 +48,7 @@
     "action": {
       "type": "postback",
       "data": "section=1.3",
-      "displayText": "1.3 In-Class"
+      "displayText": "In-Class"
     }
   },
   {
@@ -61,7 +61,7 @@
     "action": {
       "type": "postback",
       "data": "section=1.5",
-      "displayText": "1.5 Schedule"
+      "displayText": "Schedule"
     }
   },
   {
@@ -74,7 +74,7 @@
     "action": {
       "type": "postback",
       "data": "section=1.6",
-      "displayText": "1.6 Tasks"
+      "displayText": "Tasks"
     }
   },
   {
@@ -87,7 +87,7 @@
     "action": {
       "type": "postback",
       "data": "section=1.7",
-      "displayText": "1.7 Forum"
+      "displayText": "Forum"
     }
   },
   {
