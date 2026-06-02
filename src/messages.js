@@ -261,7 +261,7 @@ export function handlePostback(data, baseUrl, lang) {
   // Rich-menu buttons. Only "manual" sends the video carousel — switching
   // menus back and forth should not spam the chat (back replies nothing).
   const menu = params.get("menu");
-  if (menu === "manual") return [buildVideoCarousel(lang)];
+  if (menu === "manual") return [buildVideoCarousel(lang), ...buildMenu(lang)];
   if (menu === "faq") return buildFaqMenu(lang);
   if (menu === "contact") return [{ type: "text", text: t(lang, "contact") }];
   if (menu) return []; // e.g. menu=back — just switch the rich menu silently
