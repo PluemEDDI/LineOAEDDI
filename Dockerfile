@@ -10,8 +10,7 @@ ENV NODE_ENV=production
 COPY --from=deps /app/node_modules ./node_modules
 COPY package.json package-lock.json ./
 COPY src ./src
-COPY scripts ./scripts
-COPY content.json faq.json faq-index.json manual.config.json translations.th.json richmenu-areas.json ./
+COPY content.json faq.json manual.config.json translations.th.json richmenu-areas.json ./
 COPY img ./img
 COPY preview ./preview
 RUN chown -R node:node /app

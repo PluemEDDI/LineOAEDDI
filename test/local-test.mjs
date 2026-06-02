@@ -11,7 +11,7 @@ import {
   handlePostback,
   handleText,
 } from "../src/messages.js";
-import { classify, faqByNo } from "../src/faq.js";
+import { faqByNo } from "../src/faq.js";
 import { config } from "../src/config.js";
 import { MemoryUserStore } from "../src/store/memory-user-store.js";
 import { FileUserStore } from "../src/store/file-user-store.js";
@@ -35,14 +35,14 @@ await ok("main menu offers 7 sections + a language button", () => {
 await ok("section 1.3.1 returns its screenshot + text", () => {
   const msgs = buildSection("1.3.1", BASE, "en");
   const img = msgs.find((m) => m.type === "image");
-  assert.match(img.originalContentUrl, /1\.3\.1_16_1\.png$/);
-  assert.match(img.previewImageUrl, /\/preview\/1\.3\.1_16_1\.png$/);
-  assert.match(textOf(msgs), /Pause Screen/);
+  assert.match(img.originalContentUrl, /1\.3\.1_13_1\.png$/);
+  assert.match(img.previewImageUrl, /\/preview\/1\.3\.1_13_1\.png$/);
+  assert.match(textOf(msgs), /Mini Player/);
 });
 
 await ok("Thai vs English render the right title", () => {
-  assert.match(textOf(buildSection("1.3.1", BASE, "th")), /หน้าจอพัก/);
-  assert.match(textOf(buildSection("1.3.1", BASE, "en")), /Pause Screen/);
+  assert.match(textOf(buildSection("1.3.1", BASE, "th")), /หน้าจอย่อ/);
+  assert.match(textOf(buildSection("1.3.1", BASE, "en")), /Mini Player/);
 });
 
 await ok("parent section drills down; child has Back + Menu", () => {
@@ -145,23 +145,12 @@ await ok("config rejects malformed env (subprocess check)", async () => {
   assert.match(r.stderr, /FAQ_HIGH/);
 });
 
-await ok("classify: confident + clear winner -> answer", () => {
-  assert.equal(classify([{ score: 0.77 }, { score: 0.5 }]), "answer");
-});
-await ok("classify: ambiguous near-tie -> suggest", () => {
-  assert.equal(classify([{ score: 0.48 }, { score: 0.43 }]), "suggest");
-});
-await ok("classify: nothing relevant -> none", () => {
-  assert.equal(classify([{ score: 0.29 }, { score: 0.2 }]), "none");
-});
-
 await ok("FAQ answer includes the question, answer, and section button", () => {
-  const faq = faqByNo.get(49); // download report (After Class -> 1.4.1)
+  const faq = faqByNo.get(16); // download lecture material (Courses -> 1.2.2)
   const msgs = buildFaqAnswer(faq, BASE, "en");
-  assert.match(textOf(msgs), /Download Report|download/i);
+  assert.match(textOf(msgs), /download/i);
   const data = msgs.at(-1).quickReply.items.map((i) => i.action.data);
-  assert.ok(data.includes("section=1.4.1"));
-  assert.ok(msgs.some((m) => m.type === "image")); // category screenshot
+  assert.ok(data.includes("section=1.2.2"));
 });
 
 await ok("FAQ suggestions list top matches as faq= postbacks", () => {
@@ -173,13 +162,13 @@ await ok("FAQ suggestions list top matches as faq= postbacks", () => {
   assert.ok(data.includes("faq=31") && data.includes("faq=30"));
 });
 
-await ok("postback faq=49 returns that FAQ's answer", () => {
-  assert.match(textOf(handlePostback("faq=49", BASE, "en")), /download/i);
+await ok("postback faq=16 returns that FAQ's answer", () => {
+  assert.match(textOf(handlePostback("faq=16", BASE, "en")), /download/i);
 });
 
 await ok("typed section number / FAQ number / menu route without the model", async () => {
-  assert.match(textOf(await handleText("1.3.1", BASE, "en")), /Pause Screen/);
-  assert.match(textOf(await handleText("29", BASE, "en")), /Due Date|Cut Off/i); // FAQ #29
+  assert.match(textOf(await handleText("1.3.1", BASE, "en")), /Mini Player/);
+  assert.match(textOf(await handleText("29", BASE, "en")), /group/i); // FAQ #29
   assert.equal((await handleText("menu", BASE, "en"))[0].quickReply.items.length, 8);
 });
 

@@ -13,7 +13,6 @@ import {
   langFromText,
 } from "./messages.js";
 import { normLang, t } from "./content.js";
-import { warmup } from "./faq.js";
 import { config } from "./config.js";
 import { createUserStore } from "./store/user-store.js";
 import { validate } from "./validate.js";
@@ -127,10 +126,6 @@ app.use((err, _req, res, _next) => {
 
 app.listen(PORT, () => {
   console.log(`ManualFAQ bot listening on ${PORT} (base URL: ${BASE_URL})`);
-  // Load the embedding model up front so the first user's question is fast.
-  warmup()
-    .then(() => console.log("FAQ embedding model ready"))
-    .catch((e) => console.error("FAQ model warmup failed:", e));
   if (!BASE_URL.startsWith("https://")) {
     console.warn(
       `⚠  BASE_URL is not HTTPS. LINE rejects image URLs that aren't HTTPS — ` +
