@@ -263,8 +263,11 @@ export function handlePostback(data, baseUrl, lang) {
   if (action === "menu") return buildMenu(lang);
   if (action === "lang") return buildLangPicker(lang);
 
-  // Rich-menu bottom buttons → swipeable YouTube video carousel + main menu
+  // Rich-menu contact button → plain contact-info text
   const menu = params.get("menu");
+  if (menu === "contact") return [{ type: "text", text: t(lang, "contact") }];
+
+  // Other rich-menu bottom buttons → swipeable YouTube video carousel + main menu
   if (menu) return buildMenuVideo(menu, lang);
 
   const faqcat = params.get("faqcat");

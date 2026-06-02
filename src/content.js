@@ -41,6 +41,8 @@ export const UI = {
     openSection: "📖 ดูหัวข้อเต็ม",
     notFound: "ไม่พบคำตอบที่ตรง ลองเลือกจากเมนู หรือพิมพ์คำถามใหม่",
     faqHint: 'พิมพ์คำถามได้เลย หรือพิมพ์ "menu"',
+    contact:
+      "ติดต่อเรา\nหากท่านมีข้อสงสัย ข้อเสนอแนะ หรือต้องการสอบถามข้อมูลเพิ่มเติม กรุณากรอกข้อมูลด้านล่าง ทีมงานจะติดต่อกลับโดยเร็วที่สุด\n\nEmail: nook.j@oventure-group.com",
   },
   en: {
     menuPrompt:
@@ -58,6 +60,8 @@ export const UI = {
     openSection: "📖 Open full section",
     notFound: "No close match. Try the menu or rephrase your question.",
     faqHint: 'Type a question, or "menu"',
+    contact:
+      "Contact us\nIf you have any questions, suggestions, or need more information, please reach out below and our team will get back to you as soon as possible.\n\nEmail: nook.j@oventure-group.com",
   },
 };
 export const t = (lang, key) => UI[normLang(lang)][key];
