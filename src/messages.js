@@ -9,7 +9,14 @@ import {
   normLang,
   t,
 } from "./content.js";
-import { faqByNo, faqCategories, faqsByCategory } from "./faq.js";
+import {
+  faqByNo,
+  faqCategories,
+  faqsByCategory,
+  faqQuestion,
+  faqAnswer,
+  faqCategoryLabel,
+} from "./faq.js";
 import { config } from "./config.js";
 
 const MAX_IMAGES = config.reply.maxImages;
@@ -88,9 +95,11 @@ export function buildSection(id, baseUrl, lang) {
 
 // FAQ top-level menu: list categories as selectable buttons.
 export function buildFaqMenu(lang) {
-  const list = faqCategories.map((c, i) => `${i + 1}. ${c}`).join("\n");
+  const list = faqCategories
+    .map((c) => `• ${faqCategoryLabel(c, lang)}`)
+    .join("\n");
   const items = faqCategories.map((c) =>
-    postbackItem(c, `faqcat=${encodeURIComponent(c)}`)
+    postbackItem(faqCategoryLabel(c, lang), `faqcat=${encodeURIComponent(c)}`)
   );
   items.push(postbackItem(t(lang, "mainMenu"), "action=menu"));
   items.push(postbackItem(t(lang, "langLabel"), "action=lang"));
@@ -107,16 +116,16 @@ export function buildFaqMenu(lang) {
 export function buildFaqCategory(category, lang) {
   const faqs = faqsByCategory.get(category);
   if (!faqs) return buildFaqMenu(lang);
-  const list = faqs.map((f) => `#${f.no}  ${f.question}`).join("\n");
+  const list = faqs.map((f) => `• ${faqQuestion(f, lang)}`).join("\n");
   const items = faqs.map((f) =>
-    postbackItem(`#${f.no} ${f.question}`, `faq=${f.no}`)
+    postbackItem(faqQuestion(f, lang), `faq=${f.no}`)
   );
   items.push(postbackItem(t(lang, "back"), "menu=faq"));
   items.push(postbackItem(t(lang, "mainMenu"), "action=menu"));
   return [
     {
       type: "text",
-      text: `📂 ${category}\n\n${list}`,
+      text: `📂 ${faqCategoryLabel(category, lang)}\n\n${list}`,
       quickReply: { items: items.slice(0, 13) },
     },
   ];
@@ -167,7 +176,7 @@ export function buildFaqAnswer(faq, baseUrl, lang) {
 
   messages.push({
     type: "text",
-    text: `💬 ${faq.question}\n\n${faq.answer}\n\n${t(lang, "faqHint")}`,
+    text: `💬 ${faqQuestion(faq, lang)}\n\n${faqAnswer(faq, lang)}\n\n${t(lang, "faqHint")}`,
     quickReply: { items },
   });
   return messages;
@@ -175,9 +184,9 @@ export function buildFaqAnswer(faq, baseUrl, lang) {
 
 // Ambiguous query: show the top matches as "did you mean" options.
 export function buildFaqSuggestions(results, lang) {
-  const list = results.map((r) => `#${r.no}  ${r.faq.question}`).join("\n");
+  const list = results.map((r) => `• ${faqQuestion(r.faq, lang)}`).join("\n");
   const items = results.map((r) =>
-    postbackItem(`#${r.no} ${r.faq.question}`, `faq=${r.no}`)
+    postbackItem(faqQuestion(r.faq, lang), `faq=${r.no}`)
   );
   items.push(postbackItem(t(lang, "mainMenu"), "action=menu"));
   return [
