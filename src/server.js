@@ -104,7 +104,7 @@ app.post("/webhook", middleware({ channelSecret }), async (req, res) => {
     await Promise.all(
       (req.body.events || []).map(async (event) => {
         const messages = await messagesFor(event);
-        if (!event.replyToken) return;
+        if (!event.replyToken || !messages?.length) return;
         return client.replyMessage({ replyToken: event.replyToken, messages });
       })
     );

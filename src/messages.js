@@ -251,11 +251,6 @@ function buildVideoCarousel(lang) {
   };
 }
 
-function buildMenuVideo(key, lang) {
-  const follow = key === "faq" ? buildFaqMenu(lang) : buildMenu(lang);
-  return [buildVideoCarousel(lang), ...follow];
-}
-
 // Route a postback (other than action=setlang, handled by the server).
 export function handlePostback(data, baseUrl, lang) {
   const params = new URLSearchParams(data);
@@ -263,12 +258,13 @@ export function handlePostback(data, baseUrl, lang) {
   if (action === "menu") return buildMenu(lang);
   if (action === "lang") return buildLangPicker(lang);
 
-  // Rich-menu contact button → plain contact-info text
+  // Rich-menu buttons. Only "manual" sends the video carousel — switching
+  // menus back and forth should not spam the chat (back replies nothing).
   const menu = params.get("menu");
+  if (menu === "manual") return [buildVideoCarousel(lang)];
+  if (menu === "faq") return buildFaqMenu(lang);
   if (menu === "contact") return [{ type: "text", text: t(lang, "contact") }];
-
-  // Other rich-menu bottom buttons → swipeable YouTube video carousel + main menu
-  if (menu) return buildMenuVideo(menu, lang);
+  if (menu) return []; // e.g. menu=back — just switch the rich menu silently
 
   const faqcat = params.get("faqcat");
   if (faqcat) return buildFaqCategory(faqcat, lang);
