@@ -26,7 +26,7 @@ export const normLang = (l) => (LANGS.includes(l) ? l : DEFAULT_LANG);
 
 export const UI = {
   th: {
-    menuPrompt: "เลือกหัวข้อจากคู่มือ — แตะปุ่มด้านล่าง",
+    menuPrompt: "เลือกหัวข้อ — กด ปุ่มด้านล่าง หรือ Manual QA",
     faqMenuPrompt: "เลือกหมวดคำถามที่เจอบ่อย:",
     subTopics: "— หัวข้อย่อย (แตะปุ่ม) —",
     menuHint: 'พิมพ์ "menu" เพื่อกลับเมนูหลัก',
@@ -44,7 +44,7 @@ export const UI = {
       "ติดต่อเรา\nหากท่านมีข้อสงสัย ข้อเสนอแนะ หรือต้องการสอบถามข้อมูลเพิ่มเติม กรุณากรอกข้อมูลด้านล่าง ทีมงานจะติดต่อกลับโดยเร็วที่สุด\n\nEmail: nook.j@oventure-group.com",
   },
   en: {
-    menuPrompt: "Choose a topic — tap a button below:",
+    menuPrompt: "Choose a topic — Click Button / Manual QA",
     faqMenuPrompt: "Choose an FAQ category:",
     subTopics: "— Sub-topics (tap a button) —",
     menuHint: 'Type "menu" for the main menu',
