@@ -12,6 +12,8 @@ import {
   handleText,
 } from "../src/messages.js";
 import { faqByNo } from "../src/faq.js";
+import { t } from "../src/content.js";
+import { isBusinessHours } from "../src/hours.js";
 import { config } from "../src/config.js";
 import { MemoryUserStore } from "../src/store/memory-user-store.js";
 import { FileUserStore } from "../src/store/file-user-store.js";
@@ -170,6 +172,24 @@ await ok("typed section number / FAQ number / menu route without the model", asy
   assert.match(textOf(await handleText("1.3.1", BASE, "en")), /Mini Player/);
   assert.match(textOf(await handleText("29", BASE, "en")), /group/i); // FAQ #29
   assert.equal((await handleText("menu", BASE, "en"))[0].quickReply.items.length, 8);
+});
+
+await ok("business hours: Mon–Fri 8:30–17:30 Asia/Bangkok (env defaults)", () => {
+  // Bangkok is UTC+7, so the UTC instants below map to local times shown.
+  assert.equal(isBusinessHours(new Date("2026-06-08T03:00:00Z")), true);  // Mon 10:00
+  assert.equal(isBusinessHours(new Date("2026-06-08T00:00:00Z")), false); // Mon 07:00 (before open)
+  assert.equal(isBusinessHours(new Date("2026-06-08T11:00:00Z")), false); // Mon 18:00 (after close)
+  assert.equal(isBusinessHours(new Date("2026-06-13T05:00:00Z")), false); // Sat 12:00 (closed day)
+  assert.equal(isBusinessHours(new Date("2026-06-08T01:30:00Z")), true);  // Mon 08:30 (open edge)
+  assert.equal(isBusinessHours(new Date("2026-06-08T10:30:00Z")), false); // Mon 17:30 (close edge, exclusive)
+});
+
+await ok("unanswerable question hands off to a human, no menu appended", async () => {
+  const msgs = await handleText("ส่ง file แล้วหายทำยังไง", BASE, "th");
+  assert.equal(msgs.length, 1);                       // no menu trailer
+  assert.equal(msgs[0].type, "text");
+  const expected = isBusinessHours() ? t("th", "handover") : t("th", "afterHours");
+  assert.equal(msgs[0].text, expected);
 });
 
 await ok("no reply exceeds 5 messages / 5000 chars (both langs)", () => {

@@ -18,6 +18,7 @@ import {
   faqCategoryLabel,
 } from "./faq.js";
 import { config } from "./config.js";
+import { isBusinessHours } from "./hours.js";
 
 const MAX_IMAGES = config.reply.maxImages;
 const QR_LABEL_MAX = config.reply.qrLabelMax;
@@ -300,7 +301,12 @@ export async function handleText(input, baseUrl, lang) {
     return buildFaqAnswer(faqByNo.get(Number(s)), baseUrl, lang); // typed "#29"
   }
 
-  return [{ type: "text", text: t(lang, "notFound") }, ...buildMenu(lang)];
+  // Nothing matched — this is a question only a human can answer. During
+  // business hours a real admin replies via the LINE OA console (the bot's
+  // menu keeps working alongside); outside hours we say so. No menu is
+  // appended here, by request.
+  const key = isBusinessHours() ? "handover" : "afterHours";
+  return [{ type: "text", text: t(lang, key) }];
 }
 
 export { normLang };

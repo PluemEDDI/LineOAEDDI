@@ -21,6 +21,19 @@ function str(envName, def) {
   return raw && raw.length ? raw : def;
 }
 
+// "HH:MM" 24-hour. Malformed values crash the boot rather than silently
+// defaulting, matching num()/enumOpt() above.
+function hhmm(envName, def) {
+  const v = str(envName, def);
+  const m = /^(\d{1,2}):(\d{2})$/.exec(v);
+  const h = m && Number(m[1]);
+  const min = m && Number(m[2]);
+  if (!m || h > 23 || min > 59) {
+    throw new Error(`config: ${envName}="${v}" must be "HH:MM" (24-hour)`);
+  }
+  return v;
+}
+
 function enumOpt(envName, def, allowed) {
   const v = str(envName, def);
   if (!allowed.includes(v)) {
@@ -61,6 +74,16 @@ export const config = Object.freeze({
     // "file" persists to data/userlang.json on disk.
     kind: enumOpt("USER_STORE", "memory", ["memory", "file"]),
   }),
+  // Support business hours. A question the bot can't answer is handed to a
+  // human — but only during these hours; outside them the bot says so. All
+  // values are env-overridable so ops can change hours without a code change.
+  hours: Object.freeze({
+    tz: str("BUSINESS_TZ", "Asia/Bangkok"),
+    open: hhmm("BUSINESS_OPEN", "08:30"),
+    close: hhmm("BUSINESS_CLOSE", "17:30"),
+    // Open days as IANA weekday numbers, 0=Sun … 6=Sat. Default Mon–Fri.
+    days: str("BUSINESS_DAYS", "1,2,3,4,5"),
+  }),
 });
 
 // Cross-field invariants: thresholds must form a sane ordering.
@@ -68,4 +91,14 @@ if (config.faq.high < config.faq.low) {
   throw new Error(
     `config: FAQ_HIGH (${config.faq.high}) must be >= FAQ_LOW (${config.faq.low})`
   );
+}
+
+// BUSINESS_DAYS must be a comma-list of weekday numbers 0–6.
+for (const d of config.hours.days.split(",")) {
+  const n = Number(d.trim());
+  if (!Number.isInteger(n) || n < 0 || n > 6) {
+    throw new Error(
+      `config: BUSINESS_DAYS="${config.hours.days}" must be weekday numbers 0–6`
+    );
+  }
 }

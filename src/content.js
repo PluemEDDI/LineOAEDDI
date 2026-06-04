@@ -39,6 +39,11 @@ export const UI = {
     didYouMean: "คุณหมายถึงข้อใด? แตะเลือกหรือพิมพ์หมายเลข:",
     openSection: "📖 ดูหัวข้อเต็ม",
     notFound: "ไม่พบคำตอบที่ตรง ลองเลือกจากเมนู หรือพิมพ์คำถามใหม่",
+    // Question the bot can't answer, during business hours — a human will reply.
+    handover: "👨‍💼 เจ้าหน้าที่กำลังตรวจสอบข้อมูลและจะตอบกลับโดยเร็วที่สุด",
+    // Same, but outside business hours.
+    afterHours:
+      "🙏 ขอบคุณที่ติดต่อ EDDI Support ขณะนี้อยู่นอกเวลาทำการ และจะตอบกลับโดยเร็วที่สุดเมื่อเจ้าหน้าที่กลับมาให้บริการ",
     faqHint: 'พิมพ์คำถามได้เลย หรือพิมพ์ "menu"',
     contact:
       "ติดต่อเรา\nหากท่านมีข้อสงสัย ข้อเสนอแนะ หรือต้องการสอบถามข้อมูลเพิ่มเติม กรุณากรอกข้อมูลด้านล่าง ทีมงานจะติดต่อกลับโดยเร็วที่สุด\n\nEmail: nook.j@oventure-group.com",
@@ -57,6 +62,11 @@ export const UI = {
     didYouMean: "Did you mean? Tap one or type its number:",
     openSection: "📖 Open full section",
     notFound: "No close match. Try the menu or rephrase your question.",
+    // Question the bot can't answer, during business hours — a human will reply.
+    handover: "👨‍💼 Our team is reviewing your question and will reply as soon as possible.",
+    // Same, but outside business hours.
+    afterHours:
+      "🙏 Thank you for contacting EDDI Support. We're currently outside business hours and will reply as soon as our team is back.",
     faqHint: 'Type a question, or "menu"',
     contact:
       "Contact us\nIf you have any questions, suggestions, or need more information, please reach out below and our team will get back to you as soon as possible.\n\nEmail: nook.j@oventure-group.com",
