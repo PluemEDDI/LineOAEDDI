@@ -40,7 +40,8 @@ export const UI = {
     openSection: "📖 ดูหัวข้อเต็ม",
     notFound: "ไม่พบคำตอบที่ตรง ลองเลือกจากเมนู หรือพิมพ์คำถามใหม่",
     // Question the bot can't answer, during business hours — a human will reply.
-    handover: "👨‍💼 เจ้าหน้าที่กำลังตรวจสอบข้อมูลและจะตอบกลับโดยเร็วที่สุด",
+    handover:
+      "ขอบคุณที่ติดต่อมานะคะ 😊\nตอนนี้ทีมงาน eddi กำลังตรวจสอบข้อมูลให้อยู่ค่ะ รบกวนรอสักครู่ แล้วจะรีบแจ้งกลับโดยเร็วที่สุดนะคะ 🙏🏻",
     // Same, but outside business hours.
     afterHours:
       "🙏 ขอบคุณที่ติดต่อ EDDI Support ขณะนี้อยู่นอกเวลาทำการ และจะตอบกลับโดยเร็วที่สุดเมื่อเจ้าหน้าที่กลับมาให้บริการ",
@@ -63,7 +64,8 @@ export const UI = {
     openSection: "📖 Open full section",
     notFound: "No close match. Try the menu or rephrase your question.",
     // Question the bot can't answer, during business hours — a human will reply.
-    handover: "👨‍💼 Our team is reviewing your question and will reply as soon as possible.",
+    handover:
+      "Thank you for reaching out 😊\nThe eddi team is checking on this for you. Please hold on a moment and we'll get back to you as soon as possible 🙏🏻",
     // Same, but outside business hours.
     afterHours:
       "🙏 Thank you for contacting EDDI Support. We're currently outside business hours and will reply as soon as our team is back.",

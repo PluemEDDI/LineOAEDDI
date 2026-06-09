@@ -20,25 +20,19 @@
     "id": "1.1.1",
     "titleEn": "Top Bar",
     "body": "1. Top Bar — the top menu lets students jump quickly to other pages or sections of the platform, such as Home, Courses, Schedule, Tasks, and Forum.\n2. Class notifications — when a class is about to start, the system notifies the student. Tap 'Join Class' to enter the classroom on time.",
-    "images": [
-      "1.1.1_5_1.png"
-    ]
+    "images": ["1.1.1_5_1.png"]
   },
   {
     "id": "1.1.2",
     "titleEn": "Side Bar",
     "body": "1. The side bar lists tasks and activities relevant to the student so they can easily check what needs to be done.\n2. Pending Question — shows the student's in-class questions that are still awaiting an answer.\n3. Pre-Class Material — this section acts as a guide that walks the learner through pre-class activities in order before each scheduled class.\n4. Due Assignment — the system shows assignment deadlines and lets the user jump straight to work that still needs to be completed; by default it navigates to whatever is still unfinished.\n5. Submission Bar — shows the total number of tasks still pending, with completed tasks highlighted in orange.",
-    "images": [
-      "1.1.2_6_1.png"
-    ]
+    "images": ["1.1.2_6_1.png"]
   },
   {
     "id": "1.1.3",
     "titleEn": "Class Panel",
     "body": "1. The Class Panel lists every class scheduled for today plus upcoming classes for the rest of the current week, Monday through Saturday.\n2. The upcoming-class list is sorted by the nearest start time.\n3. Each entry shows the time the student needs to attend that class.\n4. After clicking the 'Enter Class' button, the student enters the live classroom / Live-Class session.",
-    "images": [
-      "1.1.3_7_1.png"
-    ]
+    "images": ["1.1.3_7_1.png"]
   },
   {
     "id": "1.2",
