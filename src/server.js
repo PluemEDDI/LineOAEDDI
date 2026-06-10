@@ -94,7 +94,9 @@ async function messagesFor(event) {
     }
     return handleText(event.message.text, BASE_URL, lang);
   }
-  return buildMenu(lang);
+  // Non-text messages (image, sticker, video, etc.): stay silent so a human
+  // admin can reply via the LINE OA console without the bot sending a menu.
+  return [];
 }
 
 // The LINE middleware verifies the X-Line-Signature header using the raw body,
