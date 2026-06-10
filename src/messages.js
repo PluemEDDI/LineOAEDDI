@@ -303,10 +303,10 @@ export async function handleText(input, baseUrl, lang) {
 
   // Nothing matched — this is a question only a human can answer. During
   // business hours a real admin replies via the LINE OA console (the bot's
-  // menu keeps working alongside); outside hours we say so. No menu is
-  // appended here, by request.
-  const key = isBusinessHours() ? "handover" : "afterHours";
-  return [{ type: "text", text: t(lang, key) }];
+  // menu keeps working alongside), so the bot stays silent and sends no
+  // auto-reply. Outside hours we say so. No menu is appended here, by request.
+  if (isBusinessHours()) return [];
+  return [{ type: "text", text: t(lang, "afterHours") }];
 }
 
 export { normLang };
