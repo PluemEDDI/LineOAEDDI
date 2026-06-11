@@ -74,6 +74,18 @@ export const config = Object.freeze({
     // "file" persists to data/userlang.json on disk.
     kind: enumOpt("USER_STORE", "memory", ["memory", "file"]),
   }),
+  log: Object.freeze({
+    // Chat/event log backend (src/log/event-sink.js):
+    //   "postgres" — durable, for ephemeral hosts (Railway + Supabase).
+    //                 Requires DATABASE_URL.
+    //   "file"     — append-only JSONL on local disk (default; good for local
+    //                 dev, but LOST on ephemeral hosts that wipe disk).
+    //   "none"     — logging off.
+    // Path applies to the "file" backend; data/ is gitignored so the default
+    // keeps user data out of version control.
+    backend: enumOpt("LOG_BACKEND", "file", ["postgres", "file", "none"]),
+    path: str("EVENT_LOG_PATH", "data/events.jsonl"),
+  }),
   // Support business hours. A question the bot can't answer is handed to a
   // human — but only during these hours; outside them the bot says so. All
   // values are env-overridable so ops can change hours without a code change.

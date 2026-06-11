@@ -15,6 +15,7 @@ import {
 import { normLang, t } from "./content.js";
 import { config } from "./config.js";
 import { createUserStore } from "./store/user-store.js";
+import { logInbound, logOutbound } from "./event-log.js";
 import { validate } from "./validate.js";
 
 // Refuse to boot if committed artifacts are inconsistent. The same checks run
@@ -105,8 +106,10 @@ app.post("/webhook", middleware({ channelSecret }), async (req, res) => {
   try {
     await Promise.all(
       (req.body.events || []).map(async (event) => {
+        logInbound(event); // every event (incl. unfollow) goes to chat history
         const messages = await messagesFor(event);
         if (!event.replyToken || !messages?.length) return;
+        logOutbound(event, messages);
         return client.replyMessage({ replyToken: event.replyToken, messages });
       })
     );
