@@ -228,10 +228,12 @@ await ok("handoff reassurance: handover in hours, afterHours outside", () => {
 });
 
 await ok("Discord embed carries message, tags, user; falls back to uncategorized", () => {
-  const e = buildHandoffEmbed({ userId: "Uabc", text: "ช่วยด้วย", tags: ["Authentication_Access"], businessHours: true });
+  const e = buildHandoffEmbed({ userId: "Uabc", displayName: "สมชาย", text: "ช่วยด้วย", tags: ["Authentication_Access"], businessHours: true });
   assert.match(e.description, /ช่วยด้วย/);
   assert.match(e.fields[0].value, /Authentication_Access/);
-  assert.equal(e.fields[1].value, "`Uabc`");
+  assert.match(e.fields[1].value, /สมชาย/);       // name shown
+  assert.match(e.fields[1].value, /`Uabc`/);       // userId kept for traceability
+  assert.equal(buildHandoffEmbed({ userId: "Uxyz", text: "x", businessHours: true }).fields[1].value, "`Uxyz`"); // no name → userId
   const none = buildHandoffEmbed({ userId: null, text: "", tags: [], businessHours: false });
   assert.match(none.fields[0].value, /uncategorized/);
   const followUp = buildHandoffEmbed({ userId: "U1", text: "x", tags: [], businessHours: true, followUp: true });

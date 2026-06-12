@@ -9,13 +9,19 @@
 const WEBHOOK = process.env.DISCORD_WEBHOOK_URL || "";
 
 // Build the Discord embed payload. Pure — no I/O — so it's unit-testable.
-export function buildHandoffEmbed({ userId, text, tags, businessHours, followUp }) {
+export function buildHandoffEmbed({ userId, displayName, text, tags, businessHours, followUp }) {
   const quoted = text ? `> ${String(text).replace(/\n/g, "\n> ")}` : "_(no text)_";
   const title = followUp
     ? "↪ Handoff follow-up (reassurance already sent)"
     : businessHours
       ? "🙋 Human handoff needed (in hours)"
       : "🌙 Handoff queued (after hours)";
+  // Prefer the LINE display name; keep the userId underneath for traceability.
+  const user = displayName
+    ? `${displayName}${userId ? `\n\`${userId}\`` : ""}`
+    : userId
+      ? `\`${userId}\``
+      : "unknown";
   return {
     title,
     description: quoted,
@@ -25,7 +31,7 @@ export function buildHandoffEmbed({ userId, text, tags, businessHours, followUp 
         name: "Tags",
         value: tags?.length ? tags.map((t) => `\`${t}\``).join(" ") : "`uncategorized`",
       },
-      { name: "User", value: userId ? `\`${userId}\`` : "unknown", inline: true },
+      { name: "User", value: user, inline: true },
       {
         name: "Status",
         value: businessHours

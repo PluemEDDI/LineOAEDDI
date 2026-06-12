@@ -75,6 +75,23 @@ async function clearHandoff(event) {
   if (uid) await userStore.set(uid, HANDOFF_KEY, 0); // resolved → next problem reassures
 }
 
+// Resolve a user's LINE display name, cached in the store so we call the
+// Profile API at most once per user. Returns undefined if unknown (e.g. the
+// user hasn't added the OA) — the alert then falls back to the userId.
+async function resolveName(uid) {
+  if (!uid) return undefined;
+  const cached = userStore.get(uid, "name");
+  if (cached) return cached;
+  try {
+    const { displayName } = await client.getProfile(uid);
+    if (displayName) await userStore.set(uid, "name", displayName);
+    return displayName;
+  } catch (e) {
+    console.warn("getProfile failed:", e?.message || e);
+    return undefined;
+  }
+}
+
 // Send the reassurance once per episode, alert the team every time, and slide
 // the episode window forward. Returns the messages to reply with.
 async function handleHandoff(event, text, routed, lang) {
@@ -83,13 +100,18 @@ async function handleHandoff(event, text, routed, lang) {
   const lastAt = uid ? Number(userStore.get(uid, HANDOFF_KEY)) || 0 : 0;
   const fresh = shouldReassure(lastAt, now, HANDOFF_COOLDOWN_MS);
   if (uid) await userStore.set(uid, HANDOFF_KEY, now);
-  notifyHandoff({
-    userId: uid,
-    text,
-    tags: routed.tags,
-    businessHours: routed.businessHours,
-    followUp: !fresh,
-  });
+  // Resolve the name then alert — in the background so the profile lookup and
+  // webhook post never delay the LINE reply (reply tokens expire).
+  void resolveName(uid).then((displayName) =>
+    notifyHandoff({
+      userId: uid,
+      displayName,
+      text,
+      tags: routed.tags,
+      businessHours: routed.businessHours,
+      followUp: !fresh,
+    })
+  );
   return fresh ? buildHandoffMessage(lang, routed.businessHours) : [];
 }
 
