@@ -21,9 +21,22 @@ function normalize(s, { stripParticles = false } = {}) {
   let out = (s || "").toLowerCase().trim();
   out = out.replace(/(.)\1{2,}/g, "$1$1"); // 3+ repeats → 2
   if (stripParticles) {
-    // Particles are politeness enders; strip every occurrence so
-    // "เข้าไม่ได้ครับ" and "เข้าไม่ได้ค่า" collapse to the same string.
-    for (const p of PARTICLES) out = out.split(p).join("");
+    // Strip polite particles only from the END of the message (repeatedly), so
+    // "เข้าไม่ได้ครับ"/"เข้าไม่ได้ค่า" normalize to "เข้าไม่ได้" — WITHOUT eating
+    // particles that live inside content words (e.g. "ค้า" ⊂ "ค้าง"/stuck,
+    // "คะ" ⊂ "คะแนน"/score, "ค่า" ⊂ "ค่าเทอม"). Suffix-only is the safe rule.
+    let changed = true;
+    while (changed) {
+      changed = false;
+      out = out.replace(/\s+$/, "");
+      for (const p of PARTICLES) {
+        if (p && out.endsWith(p)) {
+          out = out.slice(0, -p.length);
+          changed = true;
+          break;
+        }
+      }
+    }
   }
   return out.replace(/\s+/g, " ").trim();
 }
