@@ -19,6 +19,7 @@ import {
 } from "./faq.js";
 import { config } from "./config.js";
 import { isBusinessHours } from "./hours.js";
+import { classifyIntent, intentTags } from "./intents.js";
 
 const MAX_IMAGES = config.reply.maxImages;
 const QR_LABEL_MAX = config.reply.qrLabelMax;
@@ -286,27 +287,51 @@ export function handlePostback(data, baseUrl, lang) {
   return id ? buildSection(id, baseUrl, lang) : buildMenu(lang);
 }
 
-// Route typed text. Commands and section/FAQ numbers are handled directly;
-// anything else gets the menu (free-text semantic search is disabled to keep
-// runtime memory low — the bot is button-driven).
-export async function handleText(input, baseUrl, lang) {
+// Route typed text. Returns { messages, handoff, tags, businessHours }.
+// Commands and section/FAQ numbers are handled directly; otherwise a keyword
+// intent answer fires. When nothing matches, the message is handed off to a
+// human and `handoff` is true (with best-guess `tags` for the admin).
+export function routeText(input, baseUrl, lang) {
   const s = (input || "").trim();
-  if (/^(menu|เมนู|start|เริ่ม)$/i.test(s)) return buildMenu(lang);
-  if (/^(lang|language|ภาษา)$/i.test(s)) return buildLangPicker(lang);
+  if (/^(menu|เมนู|start|เริ่ม)$/i.test(s)) return { messages: buildMenu(lang), handoff: false };
+  if (/^(lang|language|ภาษา)$/i.test(s)) return { messages: buildLangPicker(lang), handoff: false };
 
   const sec = s.match(/\b1(?:\.\d+){1,2}\b/); // section id like 1.3 / 1.3.1
-  if (sec && byId.has(sec[0])) return buildSection(sec[0], baseUrl, lang);
+  if (sec && byId.has(sec[0])) return { messages: buildSection(sec[0], baseUrl, lang), handoff: false };
 
   if (/^\d{1,2}$/.test(s) && faqByNo.has(Number(s))) {
-    return buildFaqAnswer(faqByNo.get(Number(s)), baseUrl, lang); // typed "#29"
+    return { messages: buildFaqAnswer(faqByNo.get(Number(s)), baseUrl, lang), handoff: false }; // typed "#29"
   }
 
-  // Nothing matched — this is a question only a human can answer. During
-  // business hours a real admin replies via the LINE OA console (the bot's
-  // menu keeps working alongside), so the bot stays silent and sends no
-  // auto-reply. Outside hours we say so. No menu is appended here, by request.
-  if (isBusinessHours()) return [];
-  return [{ type: "text", text: t(lang, "afterHours") }];
+  // Keyword intent match → pre-written answer (typo-tolerant; see intents.js).
+  // Fires whenever a known operational intent is recognized, in or out of hours.
+  // `intent` is surfaced so the caller can clear an open handoff on closure.
+  const hit = classifyIntent(s);
+  if (hit) return { messages: [{ type: "text", text: hit.answer(lang) }], handoff: false, intent: hit.name };
+
+  // Nothing matched — a question only a human can answer. The reassurance reply
+  // (deduped per user) and the team alert are the caller's job; this function
+  // stays pure/stateless so it remains unit-testable. See server.js.
+  return { messages: [], handoff: true, tags: intentTags(s), businessHours: isBusinessHours() };
+}
+
+// Back-compat thin wrapper: callers that only need the reply messages.
+export async function handleText(input, baseUrl, lang) {
+  return routeText(input, baseUrl, lang).messages;
+}
+
+// The reassurance shown when a message is handed off to a human: a "we're on
+// it" note in hours, the closed note after hours. The server sends this at
+// most once per handoff episode (see shouldReassure) so users aren't spammed.
+export function buildHandoffMessage(lang, businessHours) {
+  return [{ type: "text", text: t(lang, businessHours ? "handover" : "afterHours") }];
+}
+
+// True if a fresh reassurance should be sent: no prior handoff, or the previous
+// one is older than the cooldown (treated as a new, separate support episode).
+export function shouldReassure(lastHandoffAt, now, cooldownMs) {
+  if (!lastHandoffAt) return true;
+  return now - lastHandoffAt > cooldownMs;
 }
 
 export { normLang };

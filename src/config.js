@@ -53,6 +53,23 @@ export const config = Object.freeze({
     low: num("FAQ_LOW", 0.3, { min: 0, max: 1 }),
     gap: num("FAQ_GAP", 0.08, { min: 0, max: 1 }),
   }),
+  intents: Object.freeze({
+    // Min score (0–1) for src/intents.js classifyIntent() to fire a keyword
+    // answer. Literal substring hits score 1.0; lower values tolerate more
+    // typos via character-bigram fuzzy matching, at the cost of false fires.
+    fuzzy: num("INTENT_FUZZY", 0.82, { min: 0, max: 1 }),
+    // Lower bar (0–1) for tagging a human handoff with best-guess intent
+    // labels. Below `fuzzy` on purpose: a handoff means nothing was confident
+    // enough to answer, but weaker guesses still help the human triage. 0.6
+    // is where spurious fuzzy tags drop out (tuned on the real chat data).
+    tagMin: num("INTENT_TAG_MIN", 0.6, { min: 0, max: 1 }),
+  }),
+  handoff: Object.freeze({
+    // Minutes before a still-open handoff is treated as a NEW support episode,
+    // so the "a human will reply" reassurance is sent again instead of staying
+    // silent. A Resolution_Closure ("ได้แล้ว/ขอบคุณ") clears it immediately.
+    reassureCooldownMin: num("HANDOFF_REASSURE_COOLDOWN_MIN", 30, { min: 0, max: 1440 }),
+  }),
   reply: Object.freeze({
     // LINE caps a reply at 5 messages; we use 4 images + 1 text.
     maxImages: num("REPLY_MAX_IMAGES", 4, { min: 1, max: 5 }),

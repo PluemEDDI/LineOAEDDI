@@ -10,7 +10,12 @@ import {
   buildFaqSuggestions,
   handlePostback,
   handleText,
+  routeText,
+  buildHandoffMessage,
+  shouldReassure,
 } from "../src/messages.js";
+import { classifyIntent, intentTags } from "../src/intents.js";
+import { buildHandoffEmbed } from "../src/notify.js";
 import { faqByNo } from "../src/faq.js";
 import { t } from "../src/content.js";
 import { isBusinessHours } from "../src/hours.js";
@@ -184,12 +189,53 @@ await ok("business hours: Mon–Fri 8:30–17:30 Asia/Bangkok (env defaults)", (
   assert.equal(isBusinessHours(new Date("2026-06-08T10:30:00Z")), false); // Mon 17:30 (close edge, exclusive)
 });
 
-await ok("unanswerable question hands off to a human, no menu appended", async () => {
-  const msgs = await handleText("ส่ง file แล้วหายทำยังไง", BASE, "th");
-  assert.equal(msgs.length, 1);                       // no menu trailer
-  assert.equal(msgs[0].type, "text");
-  const expected = isBusinessHours() ? t("th", "handover") : t("th", "afterHours");
-  assert.equal(msgs[0].text, expected);
+await ok("unanswerable question is a handoff with tags; routeText sends no auto-reply", () => {
+  const r = routeText("ส่ง file แล้วหายทำยังไง", BASE, "th");
+  assert.equal(r.handoff, true);
+  assert.deepEqual(r.messages, []);            // reassurance is server-managed + deduped
+  assert.ok(Array.isArray(r.tags));
+  assert.equal(typeof r.businessHours, "boolean");
+});
+
+await ok("a known intent auto-answers and is not a handoff", () => {
+  const r = routeText("เข้าไม่ได้ครับ", BASE, "th");
+  assert.equal(r.handoff, false);
+  assert.equal(r.intent, "Authentication_Access");
+  assert.equal(r.messages[0].type, "text");
+});
+
+await ok("closure never fires Authentication; negated closure is not a closure", () => {
+  assert.equal(classifyIntent("เข้าได้แล้วค่ะ ขอบคุณ").name, "Resolution_Closure");
+  assert.equal(classifyIntent("เข้าได้แล้ว(ไม่ได้)"), null); // negator suppresses
+});
+
+await ok("intent tags are best-guess, capped at 3, no spurious labels", () => {
+  assert.deepEqual(intentTags("เข้าระบบ eddi ไม่ค่อยจะได้"), ["Authentication_Access"]);
+  assert.deepEqual(intentTags("อยากกินข้าวเย็น"), []); // unrelated → no tags
+  assert.ok(intentTags("xxxxxxxxxx").length <= 3);
+});
+
+await ok("reassurance sent once per episode, re-sent only after cooldown", () => {
+  const COOL = 30 * 60_000;
+  assert.equal(shouldReassure(0, 1_000_000, COOL), true);                  // no prior → reassure
+  assert.equal(shouldReassure(1_000_000, 1_000_000 + 60_000, COOL), false); // 1 min later → silent
+  assert.equal(shouldReassure(1_000_000, 1_000_000 + COOL + 1, COOL), true); // past cooldown → reassure
+});
+
+await ok("handoff reassurance: handover in hours, afterHours outside", () => {
+  assert.equal(buildHandoffMessage("th", true)[0].text, t("th", "handover"));
+  assert.equal(buildHandoffMessage("en", false)[0].text, t("en", "afterHours"));
+});
+
+await ok("Discord embed carries message, tags, user; falls back to uncategorized", () => {
+  const e = buildHandoffEmbed({ userId: "Uabc", text: "ช่วยด้วย", tags: ["Authentication_Access"], businessHours: true });
+  assert.match(e.description, /ช่วยด้วย/);
+  assert.match(e.fields[0].value, /Authentication_Access/);
+  assert.equal(e.fields[1].value, "`Uabc`");
+  const none = buildHandoffEmbed({ userId: null, text: "", tags: [], businessHours: false });
+  assert.match(none.fields[0].value, /uncategorized/);
+  const followUp = buildHandoffEmbed({ userId: "U1", text: "x", tags: [], businessHours: true, followUp: true });
+  assert.match(followUp.title, /follow-up/);
 });
 
 await ok("no reply exceeds 5 messages / 5000 chars (both langs)", () => {

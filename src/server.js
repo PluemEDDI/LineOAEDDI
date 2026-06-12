@@ -9,9 +9,12 @@ import {
   buildLangSet,
   buildMenu,
   handlePostback,
-  handleText,
+  routeText,
+  buildHandoffMessage,
+  shouldReassure,
   langFromText,
 } from "./messages.js";
+import { notifyHandoff } from "./notify.js";
 import { normLang, t } from "./content.js";
 import { config } from "./config.js";
 import { createUserStore } from "./store/user-store.js";
@@ -62,6 +65,34 @@ async function setLang(event, lang) {
   if (uid) await userStore.set(uid, "lang", normLang(lang));
 }
 
+// Per-user handoff state: timestamp (ms) of the last handoff, so the "a human
+// will reply" reassurance is sent at most once per support episode.
+const HANDOFF_KEY = "handoffAt";
+const HANDOFF_COOLDOWN_MS = config.handoff.reassureCooldownMin * 60_000;
+
+async function clearHandoff(event) {
+  const uid = event.source?.userId;
+  if (uid) await userStore.set(uid, HANDOFF_KEY, 0); // resolved → next problem reassures
+}
+
+// Send the reassurance once per episode, alert the team every time, and slide
+// the episode window forward. Returns the messages to reply with.
+async function handleHandoff(event, text, routed, lang) {
+  const uid = event.source?.userId;
+  const now = Date.now();
+  const lastAt = uid ? Number(userStore.get(uid, HANDOFF_KEY)) || 0 : 0;
+  const fresh = shouldReassure(lastAt, now, HANDOFF_COOLDOWN_MS);
+  if (uid) await userStore.set(uid, HANDOFF_KEY, now);
+  notifyHandoff({
+    userId: uid,
+    text,
+    tags: routed.tags,
+    businessHours: routed.businessHours,
+    followUp: !fresh,
+  });
+  return fresh ? buildHandoffMessage(lang, routed.businessHours) : [];
+}
+
 // Serve the manual screenshots referenced by messages. Videos are hosted on
 // YouTube, so no /video static mount is needed.
 app.use("/img",     express.static(join(ROOT, "img")));
@@ -93,7 +124,15 @@ async function messagesFor(event) {
       await setLang(event, set);
       return buildLangSet(set);
     }
-    return handleText(event.message.text, BASE_URL, lang);
+    const text = event.message.text;
+    const routed = routeText(text, BASE_URL, lang);
+    if (!routed.handoff) {
+      // A confirmed resolution clears the open handoff so the next problem gets
+      // a fresh reassurance.
+      if (routed.intent === "Resolution_Closure") await clearHandoff(event);
+      return routed.messages;
+    }
+    return handleHandoff(event, text, routed, lang);
   }
   // Non-text messages (image, sticker, video, etc.): stay silent so a human
   // admin can reply via the LINE OA console without the bot sending a menu.

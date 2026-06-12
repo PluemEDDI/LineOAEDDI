@@ -1,0 +1,128 @@
+{
+  "_doc": "Keyword-driven intent answers for free-text messages. Edited by hand (NOT rebuilt from a CSV). Matching is normalized substring + fuzzy (typo-tolerant) — see src/intents.js. 'priority' breaks ties (lower wins). 'closure: true' intents suppress problem intents in the same message unless a 'negator' is present. Threshold knob: INTENT_FUZZY in src/config.js.",
+  "settings": {
+    "particles": ["ครับผม", "ครับ", "ค่ะ", "คับ", "ค่า", "คะ", "ค้า", "นะคะ", "นะครับ", "จ้า", "จ้ะ"]
+  },
+  "intents": [
+    {
+      "name": "Resolution_Closure",
+      "priority": 1,
+      "closure": true,
+      "negators": ["ไม่ได้", "ไม่ได้ยิน", "ยังไม่"],
+      "keywords": ["เข้าได้แล้ว", "ได้แล้ว", "ได้ละ", "เจอแล้ว", "ขึ้นแล้ว", "ดูได้แล้ว", "ได้ยินแล้ว", "เข้าได้เลย", "ขอบคุณ"],
+      "answer": {
+        "th": "ยินดีด้วยค่ะ 🎉 ถ้ามีปัญหาอื่นเพิ่มเติมแจ้งได้เลยนะคะ",
+        "en": "Glad it's working now 🎉 Let us know if anything else comes up."
+      }
+    },
+    {
+      "name": "Acknowledgment",
+      "priority": 2,
+      "keywords": ["โอเค", "รับทราบ", "okay", "ok", "ใช่ครับ", "ใช่ค่ะ"],
+      "answer": {
+        "th": "รับทราบค่ะ 🙏",
+        "en": "Noted 🙏"
+      }
+    },
+    {
+      "name": "Orphaned_PII",
+      "priority": 3,
+      "_note": "Also fired by PII patterns (BU email, 10-digit student ID, intake-form labels) detected in src/intents.js — not just these keywords.",
+      "keywords": ["section/วิชา", "ชื่อ-นามสกุล"],
+      "answer": {
+        "th": "ได้รับข้อมูลแล้วค่ะ ทีมงานจะตรวจสอบบัญชีและรีบดำเนินการแก้ไขให้โดยเร็วที่สุดนะคะ 🙏 ระหว่างนี้รบกวนลองล็อกอินด้วยรหัสนักศึกษาอีกครั้งค่ะ",
+        "en": "Got your details — the team will check the account and fix it as soon as possible 🙏 Meanwhile, please try logging in with your student ID again."
+      }
+    },
+    {
+      "name": "Authentication_Access",
+      "priority": 4,
+      "keywords": ["เข้าไม่ได้", "เข้าใช้งานไม่ได้", "เข้าใช้ไม่ได้", "เข้าเรียนไม่ได้", "เข้าห้องเรียนไม่ได้", "เข้าเว็บไม่ได้", "เข้าเว็ปไม่ได้", "เข้าระบบไม่ได้", "เข้า eddi ไม่ได้", "เข้าeddiไม่ได้", "login", "รหัสผ่านไม่ถูกต้อง", "รหัสผ่านผิด", "ลืมรหัส", "จำรหัสไม่ได้", "กดjoinไม่ได้", "join ไม่ได้", "ใช้รหัสนักศึกษาเข้าไม่ได้", "เข้าสู่ระบบ"],
+      "answer": {
+        "th": "รบกวนลองล็อกอินด้วย รหัสนักศึกษา อีกครั้งนะคะ\nถ้ายังเข้าไม่ได้ รบกวนส่งข้อมูลนี้มาให้ทีมงานค่ะ:\nSection/วิชา :\nชื่อ – นามสกุล (ภาษาอังกฤษ) :\nE-mail :\nรหัสนักศึกษา :",
+        "en": "Please try logging in with your student ID again.\nIf it still fails, send us:\nSection/Course :\nFull name (English) :\nE-mail :\nStudent ID :"
+      }
+    },
+    {
+      "name": "System_Stability",
+      "priority": 5,
+      "keywords": ["โหลดค้าง", "โหลดนาน", "โหลดไม่ไป", "เด้งออก", "หลุด", "ล่ม", "มันหมุน", "หมุนสักพัก", "รวน", "ค้าง", "เว็บล่ม", "จอค้าง"],
+      "answer": {
+        "th": "ขณะนี้มีผู้ใช้งานพร้อมกันจำนวนมากค่ะ รบกวนรอสักครู่แล้วกด Refresh หรือเข้าใหม่อีกครั้งนะคะ ถ้ายังค้างอยู่แจ้งทีมงานได้เลยค่ะ",
+        "en": "There are a lot of users online right now. Please wait a moment, then Refresh or rejoin. If it's still stuck, let the team know."
+      }
+    },
+    {
+      "name": "Media_Playback_Audio",
+      "priority": 6,
+      "keywords": ["ไม่ได้ยินเสียง", "ไม่ได้ยิน", "เสียงหาย", "เสียงขาด", "เสียงเบา", "กดมิ้ว", "กดอันมิ้ว", "mute", "unmute", "ไม่มีเสียง"],
+      "answer": {
+        "th": "รบกวนกดปุ่ม Allow / อนุญาต ให้สิทธิ์ไมโครโฟนและลำโพงในเบราว์เซอร์ค่ะ จากนั้นเสียงจะกลับมานะคะ 🔊",
+        "en": "Please click Allow to grant the browser microphone/speaker permission — the audio should come back after that 🔊"
+      }
+    },
+    {
+      "name": "Media_Playback_Video",
+      "priority": 7,
+      "keywords": ["ดูคลิปไม่ได้", "ดูวิดีโอไม่ได้", "ดูไม่ได้", "วิดีโอไม่ขึ้น", "คลิปไม่ขึ้น", "วิดีโอขึ้นโหลด", "เปิดวิดีโอไม่ได้", "วิดีโอประกอบ"],
+      "answer": {
+        "th": "รบกวนกด Refresh หน้าวิดีโอ และตรวจสอบสัญญาณอินเทอร์เน็ตค่ะ ถ้ามีปุ่ม Allow ให้กดอนุญาตด้วยนะคะ",
+        "en": "Please Refresh the video page and check your internet connection. If an Allow prompt appears, grant it too."
+      }
+    },
+    {
+      "name": "Coursework_Assignment",
+      "priority": 8,
+      "keywords": ["งานที่อาจารย์สั่ง", "ส่งงาน", "ส่งคำถาม", "assignment", "quiz", "ติ๊กถูก", "on time", "0/1", "งานweek", "ทำงานส่ง", "งานวันนี้", "ทำครบ", "ย้อนทำ"],
+      "answer": {
+        "th": "งานจะอยู่ในแต่ละ Week ค่ะ — อันที่ยังไม่ขึ้นเครื่องหมายติ๊กถูกคืออันที่ยังไม่ได้ส่ง ส่วน on time สีเขียวคือส่งเรียบร้อยแล้วค่ะ ✅ (บางงานต้องดูวิดีโอให้จบก่อนถึงจะติ๊กถูก)",
+        "en": "Assignments live under each Week. Items without a green checkmark aren't submitted yet; an 'on time' green tag means it's done ✅ (some tasks require finishing the video first before the check appears)."
+      }
+    },
+    {
+      "name": "Navigation_HowTo",
+      "priority": 9,
+      "keywords": ["ออกจากรูม", "ออกจากห้อง", "ตรงไหน", "เข้ายังไง", "ช่องแชท", "เข้าเรียนเหมือนซูม", "เข้าผิดรูม", "ตรงนี้หรอ", "รอหน้านี้"],
+      "answer": {
+        "th": "บอกหน่อยได้ไหมคะว่าติดตรงขั้นตอนไหน 🙂 (เช่น ออกจากห้อง = กดปุ่มออกมุมจอแล้วเลือกห้องหลัก / เข้าเรียน = กดที่คลาสในหน้า Eddi ค่ะ)",
+        "en": "Could you tell us which step you're stuck on? 🙂 (e.g. leave room = tap the exit button and pick the main room / join class = tap the class on the Eddi page)."
+      }
+    },
+    {
+      "name": "Link_Menu_Request",
+      "priority": 10,
+      "keywords": ["ลิงค์", "ลิ้ง", "ลิ้งค์", "ลิงก์", "link", "menu", "เข้าแอป"],
+      "answer": {
+        "th": "นี่คือลิงก์เข้าใช้งาน Eddi ค่ะ 👉 [Eddi link] หรือกดที่เมนูด้านล่างได้เลยนะคะ",
+        "en": "Here's the Eddi access link 👉 [Eddi link] — or tap the menu below."
+      }
+    },
+    {
+      "name": "Device_Environment",
+      "priority": 11,
+      "keywords": ["ไอแพด", "ไอเเพด", "ipad", "iphone", "มือถือ", "teams", "แอพทีม"],
+      "answer": {
+        "th": "รับทราบอุปกรณ์ที่ใช้แล้วค่ะ แนะนำให้ใช้เบราว์เซอร์ Chrome/Safari เวอร์ชันล่าสุด และกด Allow สิทธิ์ต่าง ๆ นะคะ",
+        "en": "Noted your device. We recommend the latest Chrome/Safari and granting all Allow permissions."
+      }
+    },
+    {
+      "name": "Account_Edit",
+      "priority": 12,
+      "keywords": ["เปลี่ยน mr", "เป็น miss", "คำนำหน้า", "เปลี่ยนชื่อ", "แก้ชื่อ"],
+      "answer": {
+        "th": "รับเรื่องแก้ไขคำนำหน้า/ชื่อแล้วค่ะ ทีมงานจะดำเนินการแก้ไขในระบบให้นะคะ 🙏",
+        "en": "We've noted the title/name change request — the team will update it in the system 🙏"
+      }
+    },
+    {
+      "name": "Greeting",
+      "priority": 13,
+      "keywords": ["สวัสดี", "สวัดดี", "hello", "hi", "เป็นยังไงบ้าง"],
+      "answer": {
+        "th": "สวัสดีค่ะ 😊 มีปัญหาการใช้งาน Eddi ตรงไหนให้ช่วยไหมคะ",
+        "en": "Hi 😊 Is there anything about Eddi we can help you with?"
+      }
+    }
+  ]
+}
