@@ -8,6 +8,14 @@
 // DISCORD_WEBHOOK_URL is unset, so local/dev runs need no extra config.
 const WEBHOOK = process.env.DISCORD_WEBHOOK_URL || "";
 
+// Discord user IDs to @mention so only the LINE OA handler(s) get a ping —
+// everyone else in the channel just sees the message. Comma-separated; empty
+// means nobody is pinged (the embed posts silently).
+const HANDLER_IDS = (process.env.DISCORD_HANDLER_IDS || "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+
 // Build the Discord embed payload. Pure — no I/O — so it's unit-testable.
 export function buildHandoffEmbed({ userId, displayName, text, tags, businessHours, followUp }) {
   const quoted = text ? `> ${String(text).replace(/\n/g, "\n> ")}` : "_(no text)_";
@@ -44,9 +52,24 @@ export function buildHandoffEmbed({ userId, displayName, text, tags, businessHou
   };
 }
 
+// Build the full webhook payload. Handlers are @mentioned only on a NEW
+// handoff (not every follow-up), and `allowed_mentions` is locked to exactly
+// those user IDs so @everyone/@here/role pings can never fire by accident.
+export function buildHandoffPayload(info, handlerIds = HANDLER_IDS) {
+  const mention =
+    !info.followUp && handlerIds.length
+      ? handlerIds.map((id) => `<@${id}>`).join(" ")
+      : "";
+  return {
+    ...(mention ? { content: mention } : {}),
+    embeds: [buildHandoffEmbed(info)],
+    allowed_mentions: { parse: [], users: handlerIds },
+  };
+}
+
 export function notifyHandoff(info) {
   if (!WEBHOOK) return;
-  const body = JSON.stringify({ embeds: [buildHandoffEmbed(info)] });
+  const body = JSON.stringify(buildHandoffPayload(info));
   fetch(WEBHOOK, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

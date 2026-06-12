@@ -15,7 +15,7 @@ import {
   shouldReassure,
 } from "../src/messages.js";
 import { classifyIntent, intentTags } from "../src/intents.js";
-import { buildHandoffEmbed } from "../src/notify.js";
+import { buildHandoffEmbed, buildHandoffPayload } from "../src/notify.js";
 import { faqByNo } from "../src/faq.js";
 import { t } from "../src/content.js";
 import { isBusinessHours } from "../src/hours.js";
@@ -238,6 +238,19 @@ await ok("Discord embed carries message, tags, user; falls back to uncategorized
   assert.match(none.fields[0].value, /uncategorized/);
   const followUp = buildHandoffEmbed({ userId: "U1", text: "x", tags: [], businessHours: true, followUp: true });
   assert.match(followUp.title, /follow-up/);
+});
+
+await ok("only handler IDs are pinged; new handoff mentions, follow-up stays silent", () => {
+  const info = { userId: "U1", text: "x", tags: [], businessHours: true };
+  const p = buildHandoffPayload(info, ["111", "222"]);
+  assert.equal(p.content, "<@111> <@222>");                 // handlers pinged
+  assert.deepEqual(p.allowed_mentions, { parse: [], users: ["111", "222"] }); // nobody else can ping
+  // Follow-ups don't ping even the handlers.
+  assert.equal(buildHandoffPayload({ ...info, followUp: true }, ["111"]).content, undefined);
+  // No configured handlers → no ping at all.
+  const none = buildHandoffPayload(info, []);
+  assert.equal(none.content, undefined);
+  assert.deepEqual(none.allowed_mentions, { parse: [], users: [] });
 });
 
 await ok("no reply exceeds 5 messages / 5000 chars (both langs)", () => {
