@@ -30,8 +30,8 @@
       "_note": "Also fired by PII patterns (BU email, 10-digit student ID, intake-form labels) detected in src/intents.js — not just these keywords.",
       "keywords": ["section/วิชา", "ชื่อ-นามสกุล"],
       "answer": {
-        "th": "ได้รับข้อมูลแล้วค่ะ ทีมงานจะตรวจสอบบัญชีและรีบดำเนินการแก้ไขให้โดยเร็วที่สุดนะคะ 🙏 ระหว่างนี้รบกวนลองล็อกอินด้วยรหัสนักศึกษาอีกครั้งค่ะ",
-        "en": "Got your details — the team will check the account and fix it as soon as possible 🙏 Meanwhile, please try logging in with your student ID again."
+        "th": "ได้รับข้อมูลแล้วค่ะ ทีมงานจะตรวจสอบบัญชีและรีบดำเนินการแก้ไขให้โดยเร็วที่สุดนะคะ 🙏 กรุณารอทางทีมติดต่อกลับเพื่อยืนยันให้ล็อคอินอีกครั้งค่ะ",
+        "en": "Got your details — the team will check the account and fix it as soon as possible 🙏 Please wait for us to contact you to confirm your login."
       }
     },
     {
@@ -40,7 +40,7 @@
       "keywords": ["เข้าไม่ได้", "เข้าใช้งานไม่ได้", "เข้าใช้ไม่ได้", "เข้าเรียนไม่ได้", "เข้าห้องเรียนไม่ได้", "เข้าเว็บไม่ได้", "เข้าเว็ปไม่ได้", "เข้าระบบไม่ได้", "เข้า eddi ไม่ได้", "เข้าeddiไม่ได้", "login", "รหัสผ่านไม่ถูกต้อง", "รหัสผ่านผิด", "ลืมรหัส", "จำรหัสไม่ได้", "กดjoinไม่ได้", "join ไม่ได้", "ใช้รหัสนักศึกษาเข้าไม่ได้", "เข้าสู่ระบบ"],
       "answer": {
         "th": "รบกวนลองล็อกอินด้วย รหัสนักศึกษา อีกครั้งนะคะ\nถ้ายังเข้าไม่ได้ รบกวนส่งข้อมูลนี้มาให้ทีมงานค่ะ:\nSection :\nวิชา :\nชื่อ – นามสกุล (ภาษาอังกฤษ) :\nE-mail :\nรหัสนักศึกษา :",
-        "en": "Please try logging in with your student ID again.\nIf it still fails, send us:\nSection/Course :\nFull name (English) :\nE-mail :\nStudent ID :"
+        "en": "Please try logging in with your student ID again.\nIf it still fails, send us:\nSection: \nCourse :\nFull name (English) :\nE-mail :\nStudent ID :"
       }
     },
     {
