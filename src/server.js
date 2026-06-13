@@ -15,6 +15,7 @@ import {
   langFromText,
 } from "./messages.js";
 import { notifyHandoff } from "./notify.js";
+import { startReportScheduler } from "./scheduler.js";
 import { normLang, t } from "./content.js";
 import { config } from "./config.js";
 import { createUserStore } from "./store/user-store.js";
@@ -192,6 +193,7 @@ app.use((err, _req, res, _next) => {
 
 app.listen(PORT, () => {
   console.log(`ManualFAQ bot listening on ${PORT} (base URL: ${BASE_URL})`);
+  startReportScheduler(); // no-op unless REPORT_ENABLED=true
   if (!BASE_URL.startsWith("https://")) {
     console.warn(
       `⚠  BASE_URL is not HTTPS. LINE rejects image URLs that aren't HTTPS — ` +

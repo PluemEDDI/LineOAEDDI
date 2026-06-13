@@ -8,8 +8,8 @@
 // For the scheduled "auto summary" (option C), run with --days 1 --discord
 // from a cron (Railway cron, GitHub Action, or system cron).
 import { readFileSync } from "node:fs";
-import pg from "pg";
 import { buildReport, formatReportText, buildReportEmbed } from "../src/report.js";
+import { loadRecentEvents } from "../src/report-job.js";
 import { sendEmbed } from "../src/notify.js";
 
 const args = process.argv.slice(2);
@@ -49,24 +49,7 @@ function loadCsv(path) {
   return rows.map((r) => Object.fromEntries(header.map((h, i) => [h, r[i]])));
 }
 
-async function loadPg(days) {
-  const connectionString = process.env.DATABASE_URL;
-  if (!connectionString) {
-    throw new Error("DATABASE_URL not set. Pass --csv <path> to report from an export instead.");
-  }
-  const client = new pg.Client({ connectionString, ssl: { rejectUnauthorized: false } });
-  await client.connect();
-  const where = days
-    ? `where dir = 'in' and ts >= now() - interval '${Number(days)} days'`
-    : `where dir = 'in'`;
-  const { rows } = await client.query(
-    `select ts, dir, user_id, body from chat_events ${where}`
-  );
-  await client.end();
-  return rows.map((r) => ({ ...r, ts: r.ts instanceof Date ? r.ts.toISOString() : r.ts }));
-}
-
-let events = csvPath ? loadCsv(csvPath) : await loadPg(days);
+let events = csvPath ? loadCsv(csvPath) : await loadRecentEvents(days);
 
 // CSV path can't filter server-side; apply --days client-side if given.
 if (csvPath && days) {

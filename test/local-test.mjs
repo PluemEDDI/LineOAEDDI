@@ -17,6 +17,7 @@ import {
 import { classifyIntent, intentTags } from "../src/intents.js";
 import { buildHandoffEmbed, buildHandoffPayload } from "../src/notify.js";
 import { buildReport } from "../src/report.js";
+import { msUntil } from "../src/scheduler.js";
 import { faqByNo } from "../src/faq.js";
 import { t } from "../src/content.js";
 import { isBusinessHours } from "../src/hours.js";
@@ -269,6 +270,13 @@ await ok("report aggregates inbound by category, handoff and resolution", () => 
   assert.equal(r.resolved, 1);
   assert.ok(r.byCategory.find((c) => c.intent === "Authentication_Access"));
   assert.equal(r.topUnmatched[0].body, "ส่ง file หายทำไง");
+});
+
+await ok("scheduler msUntil computes ms to next HH:MM in tz (Bangkok, no DST)", () => {
+  const now = new Date("2026-06-11T03:00:00Z"); // = 10:00:00 Asia/Bangkok
+  assert.equal(msUntil(18, 0, "Asia/Bangkok", now), 8 * 3600 * 1000);   // 10:00 → 18:00 = 8h
+  assert.equal(msUntil(9, 0, "Asia/Bangkok", now), 23 * 3600 * 1000);   // already past → next day
+  assert.equal(msUntil(10, 0, "Asia/Bangkok", now), 24 * 3600 * 1000);  // exactly now → next day
 });
 
 await ok("no reply exceeds 5 messages / 5000 chars (both langs)", () => {

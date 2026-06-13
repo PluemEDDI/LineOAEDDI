@@ -21,6 +21,14 @@ function str(envName, def) {
   return raw && raw.length ? raw : def;
 }
 
+function bool(envName, def) {
+  const raw = process.env[envName];
+  if (raw === undefined || raw === "") return def;
+  if (raw === "true" || raw === "1") return true;
+  if (raw === "false" || raw === "0") return false;
+  throw new Error(`config: ${envName}="${raw}" must be true/false`);
+}
+
 // "HH:MM" 24-hour. Malformed values crash the boot rather than silently
 // defaulting, matching num()/enumOpt() above.
 function hhmm(envName, def) {
@@ -69,6 +77,15 @@ export const config = Object.freeze({
     // so the "a human will reply" reassurance is sent again instead of staying
     // silent. A Resolution_Closure ("ได้แล้ว/ขอบคุณ") clears it immediately.
     reassureCooldownMin: num("HANDOFF_REASSURE_COOLDOWN_MIN", 30, { min: 0, max: 1440 }),
+  }),
+  report: Object.freeze({
+    // In-process daily report scheduler (src/scheduler.js). Off by default.
+    // Needs DATABASE_URL (to read chat_events) and DISCORD_WEBHOOK_URL (to post).
+    enabled: bool("REPORT_ENABLED", false),
+    hour: num("REPORT_HOUR", 18, { min: 0, max: 23 }), // local hour in REPORT_TZ
+    minute: num("REPORT_MINUTE", 0, { min: 0, max: 59 }),
+    tz: str("REPORT_TZ", "Asia/Bangkok"),
+    days: num("REPORT_DAYS", 1, { min: 1, max: 365 }), // window each run covers
   }),
   reply: Object.freeze({
     // LINE caps a reply at 5 messages; we use 4 images + 1 text.
