@@ -67,6 +67,28 @@ export function buildHandoffPayload(info, handlerIds = HANDLER_IDS) {
   };
 }
 
+// Post a single embed and AWAIT the result — for scripts (e.g. the report job)
+// that need to know it landed and then exit. Returns true on success, false if
+// the webhook is unset or the post failed. Never throws.
+export async function sendEmbed(embed) {
+  if (!WEBHOOK) {
+    console.warn("DISCORD_WEBHOOK_URL not set — skipping Discord post.");
+    return false;
+  }
+  try {
+    const r = await fetch(WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ embeds: [embed], allowed_mentions: { parse: [] } }),
+    });
+    if (!r.ok) console.error("discord post failed:", r.status, await r.text().catch(() => ""));
+    return r.ok;
+  } catch (e) {
+    console.error("discord post error:", e?.message || e);
+    return false;
+  }
+}
+
 export function notifyHandoff(info) {
   if (!WEBHOOK) return;
   const body = JSON.stringify(buildHandoffPayload(info));

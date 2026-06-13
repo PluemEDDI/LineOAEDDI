@@ -11,6 +11,7 @@
     "build": "node scripts/build.mjs",
     "build:faq": "node scripts/build_faq.mjs",
     "validate": "node scripts/validate.mjs",
+    "report": "node --env-file-if-exists=.env scripts/report.mjs",
     "setup:richmenu": "node --env-file=.env scripts/setup_richmenu.mjs"
   },
   "engines": {

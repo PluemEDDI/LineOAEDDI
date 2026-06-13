@@ -16,6 +16,7 @@ import {
 } from "../src/messages.js";
 import { classifyIntent, intentTags } from "../src/intents.js";
 import { buildHandoffEmbed, buildHandoffPayload } from "../src/notify.js";
+import { buildReport } from "../src/report.js";
 import { faqByNo } from "../src/faq.js";
 import { t } from "../src/content.js";
 import { isBusinessHours } from "../src/hours.js";
@@ -251,6 +252,23 @@ await ok("only handler IDs are pinged; new handoff mentions, follow-up stays sil
   const none = buildHandoffPayload(info, []);
   assert.equal(none.content, undefined);
   assert.deepEqual(none.allowed_mentions, { parse: [], users: [] });
+});
+
+await ok("report aggregates inbound by category, handoff and resolution", () => {
+  const events = [
+    { dir: "in", user_id: "U1", ts: "2026-06-11T05:00:00Z", body: "เข้าไม่ได้ครับ" },     // Auth
+    { dir: "in", user_id: "U1", ts: "2026-06-11T05:05:00Z", body: "ได้แล้วครับ ขอบคุณ" }, // Closure
+    { dir: "in", user_id: "U2", ts: "2026-06-11T05:10:00Z", body: "ส่ง file หายทำไง" },    // handoff
+    { dir: "out", user_id: "U1", ts: "2026-06-11T05:06:00Z", body: null },                  // ignored
+    { dir: "in", user_id: "U2", ts: "2026-06-11T05:11:00Z", body: "   " },                  // ignored (empty)
+  ];
+  const r = buildReport(events);
+  assert.equal(r.total, 3);
+  assert.equal(r.users, 2);
+  assert.equal(r.handoff, 1);
+  assert.equal(r.resolved, 1);
+  assert.ok(r.byCategory.find((c) => c.intent === "Authentication_Access"));
+  assert.equal(r.topUnmatched[0].body, "ส่ง file หายทำไง");
 });
 
 await ok("no reply exceeds 5 messages / 5000 chars (both langs)", () => {
