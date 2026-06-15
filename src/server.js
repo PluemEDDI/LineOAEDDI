@@ -20,6 +20,7 @@ import { normLang, t } from "./content.js";
 import { config } from "./config.js";
 import { createUserStore } from "./store/user-store.js";
 import { logInbound, logOutbound } from "./event-log.js";
+import { forwardToSheet } from "./log/sheet-forward.js";
 import { validate } from "./validate.js";
 
 // Refuse to boot if committed artifacts are inconsistent. The same checks run
@@ -166,6 +167,9 @@ async function messagesFor(event) {
 // so it must run before any JSON body parser on this route.
 app.post("/webhook", middleware({ channelSecret }), async (req, res) => {
   try {
+    // Mirror the raw LINE payload to the team Google Sheet (fire-and-forget;
+    // no-op unless SHEET_WEBHOOK_URL is set). Must not block the reply path.
+    forwardToSheet(req.body);
     await Promise.all(
       (req.body.events || []).map(async (event) => {
         logInbound(event); // every event (incl. unfollow) goes to chat history

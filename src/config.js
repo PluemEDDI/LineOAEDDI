@@ -119,10 +119,13 @@ export const config = Object.freeze({
     // keeps user data out of version control.
     backend: enumOpt("LOG_BACKEND", "file", ["postgres", "file", "none"]),
     path: str("EVENT_LOG_PATH", "data/events.jsonl"),
-    // Optional: also forward every event to a Google Apps Script web app that
-    // appends it to a Sheet. When set, it TEES — the primary backend above
-    // still records, and each event is also POSTed here. Unset = off.
+    // Optional: forward the RAW LINE webhook payload to a Google Apps Script
+    // web app that logs inbound text messages to a Sheet (see
+    // src/log/sheet-forward.js). Independent of the backend above — the local/
+    // DB log is unaffected. Unset = off. sheetToken is the script's optional
+    // shared secret, sent as the ?token= query param.
     sheetUrl: str("SHEET_WEBHOOK_URL", ""),
+    sheetToken: str("SHEET_WEBHOOK_TOKEN", ""),
   }),
   // Support business hours. A question the bot can't answer is handed to a
   // human — but only during these hours; outside them the bot says so. All
