@@ -184,12 +184,11 @@ async function messagesFor(event) {
     const routed = routeText(text, BASE_URL, lang);
 
     if (!routed.handoff) {
-      // If an admin recently replied to this user, suppress bot auto-replies for
-      // simple acknowledgments so the bot doesn't interrupt a live human chat.
-      // We only suppress intent matches (not commands/FAQ numbers) — those are
-      // always intentional and should still work.
-      const SUPPRESS_INTENTS = new Set(["Resolution_Closure", "Acknowledgment"]);
-      if (isAdminReplyCooldown(uid) && SUPPRESS_INTENTS.has(routed.intent)) {
+      // If an admin recently replied to this user, suppress ALL keyword intent
+      // replies so the bot doesn't interrupt a live human conversation.
+      // Commands (menu, lang) and FAQ number lookups have no `intent` field and
+      // are always intentional — those still work normally.\
+      if (isAdminReplyCooldown(uid) && routed.intent) {
         console.log(`[admin-cooldown] suppressed "${routed.intent}" reply for ${uid}`);
         return [];
       }
