@@ -72,9 +72,32 @@ async function setLang(event, lang) {
 const HANDOFF_KEY = "handoffAt";
 const HANDOFF_COOLDOWN_MS = config.handoff.reassureCooldownMin * 60_000;
 
+// Per-user admin-reply state: timestamp (ms) when an admin last manually sent
+// a message to this user. While within the cooldown window, user acknowledgments
+// like "ได้ครับ" / "ได้ค่ะ" are suppressed so the bot doesn't interrupt an
+// ongoing human-to-human conversation.
+const ADMIN_REPLY_KEY = "adminRepliedAt";
+const ADMIN_COOLDOWN_MS = config.handoff.adminReplyCooldownMin * 60_000;
+
 async function clearHandoff(event) {
   const uid = event.source?.userId;
   if (uid) await userStore.set(uid, HANDOFF_KEY, 0); // resolved → next problem reassures
+}
+
+// Record the timestamp when an admin manually sent a message to a user.
+// Called whenever we receive a message event with no replyToken — LINE only
+// issues replyTokens for messages sent by end-users, so their absence reliably
+// identifies admin/OA-console messages.
+async function markAdminReplied(userId) {
+  if (userId) await userStore.set(userId, ADMIN_REPLY_KEY, Date.now());
+}
+
+// True if an admin replied to this user within the cooldown window, meaning
+// the bot should stay silent on follow-up acknowledgments.
+function isAdminReplyCooldown(userId) {
+  if (!userId || !ADMIN_COOLDOWN_MS) return false;
+  const lastAt = Number(userStore.get(userId, ADMIN_REPLY_KEY)) || 0;
+  return lastAt > 0 && Date.now() - lastAt < ADMIN_COOLDOWN_MS;
 }
 
 // Resolve a user's LINE display name, cached in the store so we call the
@@ -141,16 +164,35 @@ async function messagesFor(event) {
     return [{ type: "text", text: t(lang, "welcome") }, ...buildLangPicker(lang)];
   }
 
-  // Typed text (the only way to navigate on PC, where buttons don't render).
   if (event.type === "message" && event.message.type === "text") {
+    // LINE only issues replyTokens for end-user messages. An admin message sent
+    // from the OA console arrives with no replyToken — use that as the signal
+    // to record the admin-reply timestamp for the target user and stay silent.
+    if (!event.replyToken) {
+      await markAdminReplied(event.source?.userId);
+      return [];
+    }
+
     const set = langFromText(event.message.text);
     if (set) {
       await setLang(event, set);
       return buildLangSet(set);
     }
+
+    const uid = event.source?.userId;
     const text = event.message.text;
     const routed = routeText(text, BASE_URL, lang);
+
     if (!routed.handoff) {
+      // If an admin recently replied to this user, suppress bot auto-replies for
+      // simple acknowledgments so the bot doesn't interrupt a live human chat.
+      // We only suppress intent matches (not commands/FAQ numbers) — those are
+      // always intentional and should still work.
+      const SUPPRESS_INTENTS = new Set(["Resolution_Closure", "Acknowledgment"]);
+      if (isAdminReplyCooldown(uid) && SUPPRESS_INTENTS.has(routed.intent)) {
+        console.log(`[admin-cooldown] suppressed "${routed.intent}" reply for ${uid}`);
+        return [];
+      }
       // A confirmed resolution clears the open handoff so the next problem gets
       // a fresh reassurance.
       if (routed.intent === "Resolution_Closure") await clearHandoff(event);

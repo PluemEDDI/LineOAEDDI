@@ -77,6 +77,10 @@ export const config = Object.freeze({
     // so the "a human will reply" reassurance is sent again instead of staying
     // silent. A Resolution_Closure ("ได้แล้ว/ขอบคุณ") clears it immediately.
     reassureCooldownMin: num("HANDOFF_REASSURE_COOLDOWN_MIN", 30, { min: 0, max: 1440 }),
+    // Minutes the bot stays silent after an admin manually replies to a user.
+    // Within this window, user acknowledgments (ได้ครับ, ขอบคุณ, etc.) are
+    // suppressed so the bot doesn't interrupt an ongoing human conversation.
+    adminReplyCooldownMin: num("ADMIN_REPLY_COOLDOWN_MIN", 10, { min: 0, max: 1440 }),
   }),
   report: Object.freeze({
     // In-process daily report scheduler (src/scheduler.js). Off by default.
