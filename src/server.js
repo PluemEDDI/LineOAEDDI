@@ -79,6 +79,12 @@ const HANDOFF_COOLDOWN_MS = config.handoff.reassureCooldownMin * 60_000;
 const ADMIN_REPLY_KEY = "adminRepliedAt";
 const ADMIN_COOLDOWN_MS = config.handoff.adminReplyCooldownMin * 60_000;
 
+// Per-user bot-reply state: timestamp (ms) of the last intent-matched bot reply
+// to this user. Within BOT_COOLDOWN_MS the bot stays silent on follow-ups so
+// an admin has a natural window to take over without the bot cutting in.
+const BOT_REPLY_KEY = "botRepliedAt";
+const BOT_COOLDOWN_MS = config.handoff.botReplyCooldownMin * 60_000;
+
 async function clearHandoff(event) {
   const uid = event.source?.userId;
   if (uid) await userStore.set(uid, HANDOFF_KEY, 0); // resolved → next problem reassures
@@ -98,6 +104,21 @@ function isAdminReplyCooldown(userId) {
   if (!userId || !ADMIN_COOLDOWN_MS) return false;
   const lastAt = Number(userStore.get(userId, ADMIN_REPLY_KEY)) || 0;
   return lastAt > 0 && Date.now() - lastAt < ADMIN_COOLDOWN_MS;
+}
+
+// Stamp the timestamp when the bot sends an intent-matched reply so the
+// post-reply cooldown window starts.
+async function markBotReplied(userId) {
+  if (userId && BOT_COOLDOWN_MS) await userStore.set(userId, BOT_REPLY_KEY, Date.now());
+}
+
+// True if the bot recently sent an intent-matched reply AND the post-reply
+// cooldown window hasn't expired yet — meaning the admin may have jumped in
+// and the bot should stay quiet.
+function isBotReplyCooldown(userId) {
+  if (!userId || !BOT_COOLDOWN_MS) return false;
+  const lastAt = Number(userStore.get(userId, BOT_REPLY_KEY)) || 0;
+  return lastAt > 0 && Date.now() - lastAt < BOT_COOLDOWN_MS;
 }
 
 // Resolve a user's LINE display name, cached in the store so we call the
@@ -146,6 +167,55 @@ app.use("/img",     express.static(join(ROOT, "img")));
 app.use("/preview", express.static(join(ROOT, "preview")));
 app.get("/", (_req, res) => res.send("ManualFAQ LINE bot is running."));
 
+// Discord "🔇 Silence bot" button handler.
+// The Discord notification embed includes a button link:
+//   {BASE_URL}/silence?uid=<userId>&token=<SILENCE_TOKEN>
+// An admin clicking it lands here; we stamp adminRepliedAt so the bot goes
+// quiet for ADMIN_REPLY_COOLDOWN_MIN minutes, then show a friendly page.
+app.get("/silence", async (req, res) => {
+  const { uid, token } = req.query;
+  const expected = config.silence.token;
+
+  // Reject if no token is configured (operator hasn't set SILENCE_TOKEN yet).
+  if (!expected) {
+    return res.status(503).send("Silence endpoint not configured (SILENCE_TOKEN unset).");
+  }
+  if (!token || token !== expected) {
+    return res.status(403).send("Invalid or missing token.");
+  }
+  if (!uid) {
+    return res.status(400).send("Missing uid parameter.");
+  }
+
+  await markAdminReplied(uid);
+  const mins = config.silence.cooldownMin;
+  console.log(`[silence] admin silenced bot for ${uid} for ${mins} min`);
+
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(`<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bot silenced</title>
+<style>
+  body{font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;
+       min-height:100vh;margin:0;background:#1a1a2e;color:#eee;}
+  .card{background:#16213e;border-radius:16px;padding:2.5rem 3rem;text-align:center;
+        box-shadow:0 8px 32px #0004;max-width:380px;width:90%;}
+  .icon{font-size:3rem;margin-bottom:.5rem;}
+  h1{margin:.25rem 0 .75rem;font-size:1.4rem;}
+  p{color:#aaa;margin:0;line-height:1.6;}
+  .badge{display:inline-block;margin-top:1rem;padding:.3rem .9rem;
+         background:#0f3460;border-radius:999px;font-size:.85rem;color:#7ec8e3;}
+</style></head>
+<body><div class="card">
+  <div class="icon">🔇</div>
+  <h1>Bot is now silent</h1>
+  <p>The bot won't interrupt this conversation for the next <strong>${mins} minutes</strong>.<br>
+     You can now reply in LINE OA freely.</p>
+  <div class="badge">User: ${String(uid).slice(0, 12)}…</div>
+</div></body></html>`);
+});
+
 async function messagesFor(event) {
   const lang = getLang(event);
 
@@ -184,17 +254,19 @@ async function messagesFor(event) {
     const routed = routeText(text, BASE_URL, lang);
 
     if (!routed.handoff) {
-      // If an admin recently replied to this user, suppress ALL keyword intent
-      // replies so the bot doesn't interrupt a live human conversation.
-      // Commands (menu, lang) and FAQ number lookups have no `intent` field and
-      // are always intentional — those still work normally.\
-      if (isAdminReplyCooldown(uid) && routed.intent) {
-        console.log(`[admin-cooldown] suppressed "${routed.intent}" reply for ${uid}`);
+      // Suppress if admin explicitly silenced the bot (via /silence endpoint or
+      // webhook detection) OR if the bot just replied and is in its post-reply
+      // cooldown window (giving the admin a natural gap to take over).
+      if (routed.intent && (isAdminReplyCooldown(uid) || isBotReplyCooldown(uid))) {
+        const reason = isAdminReplyCooldown(uid) ? "admin-cooldown" : "bot-reply-cooldown";
+        console.log(`[${reason}] suppressed "${routed.intent}" reply for ${uid}`);
         return [];
       }
       // A confirmed resolution clears the open handoff so the next problem gets
       // a fresh reassurance.
       if (routed.intent === "Resolution_Closure") await clearHandoff(event);
+      // Stamp the bot-reply timestamp so the post-reply window starts now.
+      if (routed.intent) await markBotReplied(uid);
       return routed.messages;
     }
     return handleHandoff(event, text, routed, lang);

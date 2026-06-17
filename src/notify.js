@@ -16,6 +16,10 @@ const HANDLER_IDS = (process.env.DISCORD_HANDLER_IDS || "")
   .map((s) => s.trim())
   .filter(Boolean);
 
+// Used to build the /silence URL embedded in the Discord button.
+const BASE_URL = (process.env.BASE_URL || "").replace(/\/$/, "");
+const SILENCE_TOKEN = process.env.SILENCE_TOKEN || "";
+
 // Build the Discord embed payload. Pure — no I/O — so it's unit-testable.
 export function buildHandoffEmbed({ userId, displayName, text, tags, businessHours, followUp }) {
   const quoted = text ? `> ${String(text).replace(/\n/g, "\n> ")}` : "_(no text)_";
@@ -55,14 +59,32 @@ export function buildHandoffEmbed({ userId, displayName, text, tags, businessHou
 // Build the full webhook payload. Handlers are @mentioned only on a NEW
 // handoff (not every follow-up), and `allowed_mentions` is locked to exactly
 // those user IDs so @everyone/@here/role pings can never fire by accident.
+// When SILENCE_TOKEN and BASE_URL are configured, a 🔇 button is appended so
+// the admin can silence the bot with one click from Discord.
 export function buildHandoffPayload(info, handlerIds = HANDLER_IDS) {
   const mention =
     !info.followUp && handlerIds.length
       ? handlerIds.map((id) => `<@${id}>`).join(" ")
       : "";
+
+  // Build the silence button only when the endpoint is usable.
+  const silenceComponents =
+    BASE_URL && SILENCE_TOKEN && info.userId
+      ? [{
+          type: 1, // ActionRow
+          components: [{
+            type: 2,            // Button
+            style: 5,           // LINK style (opens URL, no interaction needed)
+            label: "🔇 Silence bot",
+            url: `${BASE_URL}/silence?uid=${encodeURIComponent(info.userId)}&token=${encodeURIComponent(SILENCE_TOKEN)}`,
+          }],
+        }]
+      : [];
+
   return {
     ...(mention ? { content: mention } : {}),
     embeds: [buildHandoffEmbed(info)],
+    ...(silenceComponents.length ? { components: silenceComponents } : {}),
     allowed_mentions: { parse: [], users: handlerIds },
   };
 }

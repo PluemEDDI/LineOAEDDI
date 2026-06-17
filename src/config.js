@@ -81,6 +81,21 @@ export const config = Object.freeze({
     // Within this window, user acknowledgments (ได้ครับ, ขอบคุณ, etc.) are
     // suppressed so the bot doesn't interrupt an ongoing human conversation.
     adminReplyCooldownMin: num("ADMIN_REPLY_COOLDOWN_MIN", 10, { min: 0, max: 1440 }),
+    // Minutes the bot stays silent after it fires an intent-matched reply.
+    // This gives the admin a natural window to jump into the conversation
+    // without the bot cutting in on every follow-up message.
+    // Set to 0 to disable.
+    botReplyCooldownMin: num("BOT_REPLY_COOLDOWN_MIN", 3, { min: 0, max: 60 }),
+  }),
+  // Discord "🔇 Silence bot" button: the /silence endpoint stamps adminRepliedAt
+  // for a user so the bot goes quiet, letting the admin take over cleanly.
+  // SILENCE_TOKEN is a shared secret that must be present in every /silence
+  // request — prevents anyone with the URL from muting the bot arbitrarily.
+  silence: Object.freeze({
+    token: str("SILENCE_TOKEN", ""),
+    // How long the bot stays silent after an admin clicks the Silence button.
+    // Reuses ADMIN_REPLY_COOLDOWN_MIN so one knob controls both paths.
+    cooldownMin: num("ADMIN_REPLY_COOLDOWN_MIN", 10, { min: 0, max: 1440 }),
   }),
   report: Object.freeze({
     // In-process daily report scheduler (src/scheduler.js). Off by default.
