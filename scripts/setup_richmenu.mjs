@@ -3,7 +3,13 @@
 // default. Idempotent — re-running cleans up the previously-named menus and
 // aliases first.
 //   node --env-file=.env scripts/setup_richmenu.mjs
-import { readFileSync } from "node:fs";
+//
+// Area data source:
+//   CONTENT_BACKEND=mongo → fetches richmenu_areas + richmenu_sections_areas
+//                           from MongoDB so you can update areas without a
+//                           file change (no code redeploy needed).
+//   CONTENT_BACKEND=file  (default) → reads from the local JSON files as before.
+import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { messagingApi } from "@line/bot-sdk";
@@ -28,6 +34,7 @@ const MENUS = [
     name: "ManualFAQ main",
     chatBarText: "เมนู Menu",
     aliasId: ALIAS_MAIN,
+    colName: "richmenu_areas",
     image: "richmenu.png",
     areasFile: "richmenu-areas.json",
     isDefault: true,
@@ -36,6 +43,7 @@ const MENUS = [
     name: "ManualFAQ sections",
     chatBarText: "หัวข้อ Topics",
     aliasId: ALIAS_SECTIONS,
+    colName: "richmenu_sections_areas",
     image: "richmenu-sections.png",
     areasFile: "richmenu-sections-areas.json",
     isDefault: false,
@@ -59,8 +67,33 @@ async function cleanupExisting() {
   }
 }
 
+// Load area definitions — from Mongo when CONTENT_BACKEND=mongo, else from disk.
+async function loadAreas(colName, filePath) {
+  const backend = process.env.CONTENT_BACKEND || "file";
+  if (backend === "mongo") {
+    const mongoUri = process.env.MONGODB_URI;
+    if (!mongoUri) {
+      console.warn(`  ⚠  MONGODB_URI not set, falling back to file: ${filePath}`);
+    } else {
+      const { MongoClient } = await import("mongodb");
+      const mc = new MongoClient(mongoUri);
+      await mc.connect();
+      const dbName = new URL(mongoUri).pathname.replace(/^\//, "") || "manualfaq";
+      const doc = await mc.db(dbName).collection(colName).findOne({ _id: "singleton" });
+      await mc.close();
+      if (doc?.data) {
+        console.log(`  [mongo] loaded ${colName}`);
+        return doc.data;
+      }
+      console.warn(`  ⚠  ${colName} not found in Mongo, falling back to file: ${filePath}`);
+    }
+  }
+  // File fallback.
+  return JSON.parse(readFileSync(join(ROOT, filePath), "utf8"));
+}
+
 async function createMenu(spec) {
-  const areas = JSON.parse(readFileSync(join(ROOT, spec.areasFile), "utf8"));
+  const areas = await loadAreas(spec.colName, spec.areasFile);
   const { richMenuId } = await client.createRichMenu({
     size: { width: 2500, height: 1686 },
     selected: spec.isDefault,

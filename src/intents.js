@@ -2,24 +2,59 @@
 // purpose: normalized substring + character-bigram fuzzy match, no embedding
 // model (semantic search was removed because it OOM'd Railway — see faq.js).
 // Data lives in intents.json (hand-edited); the fuzzy threshold is a config knob.
+//
+// Two init modes:
+//   CONTENT_BACKEND=file  (default) — readFileSync at module load (unchanged).
+//   CONTENT_BACKEND=mongo — init(data) called from server.js after
+//                           loadAllContent() resolves.
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { config } from "./config.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const DATA = JSON.parse(readFileSync(join(ROOT, "intents.json"), "utf8"));
-
-const PARTICLES = DATA.settings.particles;
-const INTENTS = DATA.intents;
 const FUZZY = config.intents.fuzzy;
+
+// ---------------------------------------------------------------------------
+// Mutable state — populated either at module load (file mode) or by init().
+// ---------------------------------------------------------------------------
+let PARTICLES = [];
+let INTENTS = [];
+
+function _build(data) {
+  PARTICLES = data.settings.particles;
+  INTENTS = data.intents;
+}
+
+// ---------------------------------------------------------------------------
+// File-mode: self-init synchronously at module load.
+// ---------------------------------------------------------------------------
+if (config.content.backend === "file") {
+  const DATA = JSON.parse(readFileSync(join(ROOT, "intents.json"), "utf8"));
+  _build(DATA);
+}
+
+// ---------------------------------------------------------------------------
+// Mongo-mode: server.js calls init() after loadAllContent() resolves.
+// ---------------------------------------------------------------------------
+/**
+ * Populate in-memory intents data (called by server.js when CONTENT_BACKEND=mongo).
+ * @param {{ settings: Object, intents: Array }} data — equivalent to intents.json
+ */
+export function init(data) {
+  _build(data);
+}
+
+// ---------------------------------------------------------------------------
+// Pure classification functions (unchanged logic).
+// ---------------------------------------------------------------------------
 
 // Normalize a message: lowercase, drop trailing polite particles, collapse
 // 3+ repeated chars (เลยยย → เลยย, ๆๆๆ → ๆๆ). Keywords get the same treatment
 // minus particle stripping (keywords carry no particles).
 function normalize(s, { stripParticles = false } = {}) {
   let out = (s || "").toLowerCase().trim();
-  out = out.replace(/(.)\1{2,}/g, "$1$1"); // 3+ repeats → 2
+  out = out.replace(/(.)(\1){2,}/g, "$1$1"); // 3+ repeats → 2
   if (stripParticles) {
     // Strip polite particles only from the END of the message (repeatedly), so
     // "เข้าไม่ได้ครับ"/"เข้าไม่ได้ค่า" normalize to "เข้าไม่ได้" — WITHOUT eating

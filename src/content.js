@@ -2,6 +2,13 @@
 // parent, faqCategories, images) lives in manual.config.json; the English
 // *body* comes from content.json (PDF-derived); the Thai *body* comes from
 // translations.th.json. Everything else here is read-only derivation.
+//
+// Two init modes:
+//   CONTENT_BACKEND=file  (default) — readFileSync at module load, exactly as
+//                                     before. No behaviour change for local dev.
+//   CONTENT_BACKEND=mongo — init(data) is called from server.js after
+//                           loadAllContent() resolves; the module exports are
+//                           populated at that point.
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -9,16 +16,67 @@ import { config } from "./config.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const REG = JSON.parse(readFileSync(join(ROOT, "manual.config.json"), "utf8"));
-const BODIES = JSON.parse(readFileSync(join(ROOT, "content.json"), "utf8"));
-const TH = JSON.parse(readFileSync(join(ROOT, "translations.th.json"), "utf8"));
 
-const bodyEnById = new Map(BODIES.map((b) => [b.id, b.body || ""]));
-// `byId` exposes the registry record merged with `body` (English) for back-
-// compat with existing callers that read `.images` and `.body`.
-export const byId = new Map(
-  REG.sections.map((s) => [s.id, { ...s, body: bodyEnById.get(s.id) || "" }])
+// ---------------------------------------------------------------------------
+// Mutable state — populated either at module load (file mode) or by init().
+// ---------------------------------------------------------------------------
+let _byId = new Map();
+let _allSections = REG.sections;
+let _topLevel = [];
+let _TH = {};
+
+function _build(bodies, th) {
+  const bodyEnById = new Map(bodies.map((b) => [b.id, b.body || ""]));
+  _byId = new Map(
+    REG.sections.map((s) => [s.id, { ...s, body: bodyEnById.get(s.id) || "" }])
+  );
+  _allSections = REG.sections;
+  _topLevel = REG.sections.filter((s) => !s.parent).map((s) => s.id);
+  _TH = th;
+}
+
+// ---------------------------------------------------------------------------
+// File-mode: self-init synchronously at module load.
+// ---------------------------------------------------------------------------
+if (config.content.backend === "file") {
+  const BODIES = JSON.parse(readFileSync(join(ROOT, "content.json"), "utf8"));
+  const TH = JSON.parse(readFileSync(join(ROOT, "translations.th.json"), "utf8"));
+  _build(BODIES, TH);
+}
+
+// ---------------------------------------------------------------------------
+// Mongo-mode: server.js calls init() after loadAllContent() resolves.
+// ---------------------------------------------------------------------------
+/**
+ * Populate in-memory content data (called by server.js when CONTENT_BACKEND=mongo).
+ * @param {{ content: Array, translationsTh: Object }} data
+ */
+export function init({ content, translationsTh }) {
+  _build(content, translationsTh);
+}
+
+// ---------------------------------------------------------------------------
+// Public API (unchanged signatures — all callers continue to work).
+// ---------------------------------------------------------------------------
+export const byId = new Proxy(
+  {},
+  {
+    get(_, prop) {
+      // Proxy every Map method/property through _byId so callers that do
+      // `byId.get(id)`, `byId.has(id)` etc. always see the live map.
+      const val = _byId[prop];
+      if (typeof val === "function") return val.bind(_byId);
+      return _byId[prop] !== undefined ? _byId[prop] : _byId.get(prop);
+    },
+  }
 );
-export const allSections = REG.sections;
+
+// Re-export as a live getter so downstream modules always see the current map.
+export const allSections = new Proxy([], {
+  get(_, prop) {
+    return _allSections[prop];
+  },
+});
 
 export const LANGS = ["th", "en"];
 export const DEFAULT_LANG = config.ui.defaultLang;
@@ -78,7 +136,7 @@ export const t = (lang, key) => UI[normLang(lang)][key];
 
 // Title in the chosen language (from the registry — no PDF fallback needed).
 export function getTitle(id, lang) {
-  const s = byId.get(id);
+  const s = _byId.get(id);
   if (!s) return id;
   return normLang(lang) === "th" ? s.titleTh : s.titleEn;
 }
@@ -86,12 +144,16 @@ export function getTitle(id, lang) {
 // Body in the chosen language. English from content.json, Thai from
 // translations.th.json (bodyTh). Both passed through formatBody for safety.
 export function getBody(id, lang) {
-  if (normLang(lang) === "th") return formatBody(TH[id]?.bodyTh || "");
-  return formatBody(byId.get(id)?.body || "");
+  if (normLang(lang) === "th") return formatBody(_TH[id]?.bodyTh || "");
+  return formatBody(_byId.get(id)?.body || "");
 }
 
 // Top-level section ids (parent == null), in registry order.
-export const topLevel = REG.sections.filter((s) => !s.parent).map((s) => s.id);
+export function getTopLevel() {
+  return _topLevel;
+}
+// Back-compat alias — existing callers import `topLevel` directly.
+export { _topLevel as topLevel };
 
 // Direct children of a section, e.g. childrenOf("1.3") -> ["1.3.1", ...].
 export function childrenOf(id) {
@@ -99,7 +161,7 @@ export function childrenOf(id) {
 }
 
 export function parentOf(id) {
-  return byId.get(id)?.parent ?? null;
+  return _byId.get(id)?.parent ?? null;
 }
 
 // Turn raw table text into readable plain text (LINE has no markdown).

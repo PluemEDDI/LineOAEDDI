@@ -16,28 +16,16 @@ import {
 } from "./messages.js";
 import { notifyHandoff } from "./notify.js";
 import { startReportScheduler } from "./scheduler.js";
-import { normLang, t } from "./content.js";
+import { normLang, t, init as initContent } from "./content.js";
+import { init as initFaq } from "./faq.js";
+import { init as initIntents } from "./intents.js";
 import { config } from "./config.js";
 import { createUserStore } from "./store/user-store.js";
 import { logInbound, logOutbound } from "./event-log.js";
 import { forwardToSheet } from "./log/sheet-forward.js";
-import { validate } from "./validate.js";
+import { validate, validateData } from "./validate.js";
 
-// Refuse to boot if committed artifacts are inconsistent. The same checks run
-// in the build gate, so this is a belt-and-braces guard for cases where the
-// server is started with stale data (e.g. deploy that missed `npm run build`).
-{
-  const { fails, warns } = validate();
-  for (const w of warns) console.warn("warn:", w);
-  if (fails.length) {
-    for (const f of fails) console.error("fail:", f);
-    console.error(
-      `\nRefusing to start: ${fails.length} content validation failure(s). ` +
-      `Run \`npm run build\` to regenerate.`
-    );
-    process.exit(1);
-  }
-}
+// Boot validation + content loading happen inside startServer() below.
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PORT = config.server.port;
@@ -308,15 +296,77 @@ app.use((err, _req, res, _next) => {
   res.status(500).end();
 });
 
-app.listen(PORT, () => {
-  console.log(`ManualFAQ bot listening on ${PORT} (base URL: ${BASE_URL})`);
-  startReportScheduler(); // no-op unless REPORT_ENABLED=true
-  if (!BASE_URL.startsWith("https://")) {
-    console.warn(
-      `⚠  BASE_URL is not HTTPS. LINE rejects image URLs that aren't HTTPS — ` +
-        `set BASE_URL to your public https URL (e.g. the ngrok URL).`
-    );
+// ── Startup ───────────────────────────────────────────────────────────────────
+async function startServer() {
+  // ── 1. Load content (Mongo or file) ────────────────────────────────────────
+  if (config.content.backend === "mongo") {
+    // Lazy-import so the mongo driver isn't loaded at all in file mode.
+    const { connectMongo } = await import("./db/mongo.js");
+    const { loadAllContent } = await import("./db/content-loader.js");
+
+    await connectMongo(config.content.mongoUri);
+    const loaded = await loadAllContent();
+
+    // Hydrate each module with the fetched data.
+    initContent({ content: loaded.content, translationsTh: loaded.translationsTh });
+    initFaq(loaded.faqItems, loaded.faqTh);
+    initIntents(loaded.intents);
+
+    // Re-read manual.config.json from disk for validation (it's not in Mongo).
+    const { readFileSync } = await import("node:fs");
+    const { join: pathJoin } = await import("node:path");
+    const regPath = pathJoin(ROOT, "manual.config.json");
+    const reg = JSON.parse(readFileSync(regPath, "utf8"));
+
+    const { fails, warns } = validateData({
+      reg,
+      content: loaded.content,
+      th: loaded.translationsTh,
+      faqs: loaded.faqItems,
+      areas: loaded.richmenuAreas,
+    });
+    for (const w of warns) console.warn("warn:", w);
+    if (fails.length) {
+      for (const f of fails) console.error("fail:", f);
+      console.error(
+        `\nRefusing to start: ${fails.length} content validation failure(s). ` +
+          `Fix the data in MongoDB and restart.`
+      );
+      process.exit(1);
+    }
+  } else {
+    // File mode — modules self-initialised from disk; run the disk validator.
+    // Refuse to boot if committed artifacts are inconsistent. The same checks
+    // run in the build gate, so this is a belt-and-braces guard for cases
+    // where the server is started with stale data.
+    const { fails, warns } = validate();
+    for (const w of warns) console.warn("warn:", w);
+    if (fails.length) {
+      for (const f of fails) console.error("fail:", f);
+      console.error(
+        `\nRefusing to start: ${fails.length} content validation failure(s). ` +
+          `Run \`npm run build\` to regenerate.`
+      );
+      process.exit(1);
+    }
   }
+
+  // ── 2. Start HTTP server ───────────────────────────────────────────────────
+  app.listen(PORT, () => {
+    console.log(`ManualFAQ bot listening on ${PORT} (base URL: ${BASE_URL})`);
+    startReportScheduler(); // no-op unless REPORT_ENABLED=true
+    if (!BASE_URL.startsWith("https://")) {
+      console.warn(
+        `⚠  BASE_URL is not HTTPS. LINE rejects image URLs that aren't HTTPS — ` +
+          `set BASE_URL to your public https URL (e.g. the ngrok URL).`
+      );
+    }
+  });
+}
+
+startServer().catch((err) => {
+  console.error("startup failed:", err);
+  process.exit(1);
 });
 
 export { app, messagesFor };

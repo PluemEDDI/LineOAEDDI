@@ -127,6 +127,14 @@ export const config = Object.freeze({
     // "file" persists to data/userlang.json on disk.
     kind: enumOpt("USER_STORE", "memory", ["memory", "file"]),
   }),
+  content: Object.freeze({
+    // Where to load the 7 content JSON files from:
+    //   "file"  — read from disk at startup (default; no DB required).
+    //   "mongo" — fetch from MongoDB at startup; requires MONGODB_URI.
+    //             Content changes only need a process restart, not a redeploy.
+    backend: enumOpt("CONTENT_BACKEND", "file", ["file", "mongo"]),
+    mongoUri: str("MONGODB_URI", ""),
+  }),
   log: Object.freeze({
     // Chat/event log backend (src/log/event-sink.js):
     //   "postgres" — durable, for ephemeral hosts (Railway + Supabase).
