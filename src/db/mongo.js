@@ -40,6 +40,26 @@ export function getDb() {
   return _db;
 }
 
+// Cache the last ping result so readiness probes don't hammer Mongo.
+const PING_CACHE_MS = 15_000;
+let _lastPingAt = 0;
+let _lastPingOk = false;
+
+/** Ping MongoDB, caching the result for PING_CACHE_MS. */
+export async function pingMongo() {
+  if (!_db) return false;
+  const now = Date.now();
+  if (now - _lastPingAt < PING_CACHE_MS) return _lastPingOk;
+  try {
+    await _db.command({ ping: 1 });
+    _lastPingOk = true;
+  } catch {
+    _lastPingOk = false;
+  }
+  _lastPingAt = now;
+  return _lastPingOk;
+}
+
 /** Close the connection (used in tests / graceful shutdown). */
 export async function closeMongo() {
   if (_client) {

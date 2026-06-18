@@ -155,6 +155,25 @@ app.use("/img",     express.static(join(ROOT, "img")));
 app.use("/preview", express.static(join(ROOT, "preview")));
 app.get("/", (_req, res) => res.send("ManualFAQ LINE bot is running."));
 
+// Tracks whether startup (content load + validation) has completed.
+let serverReady = false;
+
+// Liveness: process is alive.
+app.get("/health", (_req, res) => res.json({ status: "ok" }));
+
+// Readiness: startup done and (in mongo mode) DB is reachable.
+app.get("/ready", async (_req, res) => {
+  if (!serverReady) return res.status(503).json({ status: "starting" });
+
+  if (config.content.backend === "mongo") {
+    const { pingMongo } = await import("./db/mongo.js");
+    const ok = await pingMongo();
+    if (!ok) return res.status(503).json({ status: "db_unavailable" });
+  }
+
+  res.json({ status: "ready" });
+});
+
 // Discord "🔇 Silence bot" button handler.
 // The Discord notification embed includes a button link:
 //   {BASE_URL}/silence?uid=<userId>&token=<SILENCE_TOKEN>
@@ -365,6 +384,7 @@ async function startServer() {
   }
 
   // ── 2. Start HTTP server ───────────────────────────────────────────────────
+  serverReady = true;
   app.listen(PORT, () => {
     console.log(`ManualFAQ bot listening on ${PORT} (base URL: ${BASE_URL})`);
     startReportScheduler(); // no-op unless REPORT_ENABLED=true
