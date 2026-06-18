@@ -312,11 +312,22 @@ async function startServer() {
     initFaq(loaded.faqItems, loaded.faqTh);
     initIntents(loaded.intents);
 
-    // Re-read manual.config.json from disk for validation (it's not in Mongo).
-    const { readFileSync } = await import("node:fs");
+    // Re-read manual.config.json + scan img/ and preview/ from disk.
+    // These are static assets committed to the repo — never in Mongo.
+    const { readFileSync, readdirSync, statSync, existsSync } = await import("node:fs");
     const { join: pathJoin } = await import("node:path");
     const regPath = pathJoin(ROOT, "manual.config.json");
     const reg = JSON.parse(readFileSync(regPath, "utf8"));
+
+    const imgDir = pathJoin(ROOT, "img");
+    const previewDir = pathJoin(ROOT, "preview");
+    const imageFiles = existsSync(imgDir) ? readdirSync(imgDir) : [];
+    const previewSizes = {};
+    if (existsSync(previewDir)) {
+      for (const fn of readdirSync(previewDir)) {
+        previewSizes[fn] = statSync(pathJoin(previewDir, fn)).size;
+      }
+    }
 
     const { fails, warns } = validateData({
       reg,
@@ -324,6 +335,8 @@ async function startServer() {
       th: loaded.translationsTh,
       faqs: loaded.faqItems,
       areas: loaded.richmenuAreas,
+      imageFiles,
+      previewSizes,
     });
     for (const w of warns) console.warn("warn:", w);
     if (fails.length) {
